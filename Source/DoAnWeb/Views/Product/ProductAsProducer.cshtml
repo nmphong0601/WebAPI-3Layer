@@ -1,0 +1,54 @@
+﻿@using DoAnWeb.Models
+@using DoAnWeb.Ultilities
+
+@model IList<Product>
+
+<hr/>
+<!-- Services Section -->
+<section id="portfolio">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">Sản phẩm cùng nhà sản xuất</h2>
+            </div>
+        </div>
+        <div class="row text-center">
+            @{
+                foreach (var p in Model)
+                {
+                    <div class="col-md-4 col-sm-6 portfolio-item">
+                        <a href="#@p.ProID" class="portfolio-link" data-toggle="modal" style="height: 360px; background-color: white; border: #eeeeee 1px solid;">
+                            <div class="portfolio-hover">
+                                <div class="portfolio-hover-content">
+                                    <i class="fa fa-eye fa-3x"></i>
+                                </div>
+                            </div>
+                            <img src="~/imgs/imgs/sp/@p.ProID/mini.jpg" class="img-thumbnail" alt="" style="border:0px;">
+                        </a>
+                        <div class="portfolio-caption" style="border:white 2px solid; background-color: #eeeeee;  ">
+                            <h4>@p.ProName.Substring(0, 14)...</h4>
+                            @if (Session["Logged"] != null)
+                            {
+                                using (var dc = new QLBH_WebEntities())
+                                {
+                                    var r = dc.Ratings.Where(m => m.ProID == p.ProID).FirstOrDefault();
+                                    if (r == null)
+                                    {
+
+                                        <div id="stars" name="stars" class="starrr" data-id="@p.ProID"></div>
+                                        <em>0 / 5</em>
+                                    }
+                                    else
+                                    {
+                                        <div id="stars" name="stars" class="starrr" data-rating="@r.Rate" data-id="@p.ProID"></div><em>@r.Rate / 5</em>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+
+            }
+        </div>
+    </div>
+</section>

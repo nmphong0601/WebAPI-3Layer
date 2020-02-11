@@ -1,0 +1,315 @@
+﻿@using DoAnWeb.Ultilities
+@using DoAnWeb.Models
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Đồ Án LTW2</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Content/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/css/bootstrapCheckbox.css" rel="stylesheet">
+    <link href="~/Content/bootstrap/css/modern-business.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="~/Content/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Theme CSS -->
+    <link href="~/Content/agency/css/agency.min.css" rel="stylesheet">
+    <link href="~/Content/css/search.css" rel="stylesheet">
+
+    @if (IsSectionDefined("style"))
+    {
+        @RenderSection("style")
+    }
+    <style type="text/css">
+        header {
+            background-repeat: no-repeat;
+            background-attachment: scroll;
+            background-position: center center;
+        }
+
+        .navbar-fixed-top{
+            z-index: 500;
+        }
+
+        .caption-green {
+            color: forestgreen;
+        }
+
+        .caption-red {
+            color: red;
+        }
+
+        .input-validation-error {
+            border: 2px solid #f00;
+            background-color: #fee;
+        }
+
+        input[type="CheckBox"].input-validation-error {
+            outline: 2px solid #f00;
+        }
+
+        .validation-Sumary-errors {
+            color: #f00;
+            font-weight: bold;
+        }
+
+        .field-validation-error {
+            color: #f00;
+            font-style: initial;
+        }
+        #myCarousel{
+            margin-top: -50px;
+        }   
+        
+        intro-text{
+            margin-left: 20%;
+        }  
+    </style>
+</head>
+
+<body id="page-top" class="index sidebar-mini skin-blue">
+
+    <div id="search" class="divOnTop">
+        <button type="button" class="close">×</button>
+        <form class="center-block form-horizontal" method="post"
+              action="@Url.Action("SearchProduct", "Search")">
+            <input type="search" id="txtSearch" name="keyword" value="" placeholder="type keyword(s) here" />
+            <button type="submit" name="btnSearch" class="btn btn-primary" value="Search">Search</button>
+        </form>
+    </div>
+    <!-- Navigation -->
+    <nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="@Url.Action("Index", "Home")">Welcome To The Best !!</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    @if (Html.IsLogged() == false)
+                    {
+
+                        <li><a href="@Url.Action("Login", "Account")">Đăng Nhập </a></li>
+                        <li><a href="@Url.Action("Register", "Account")">Đăng Ký</a></li>
+
+                    }
+
+                    else
+                    {
+                        var ui = Session["Logged"] as UserInfo;
+                        if (ui.Permission != 1)
+                        {
+                            <li>
+                                <a href="@Url.Action("Detail","Cart")">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    Giỏ hàng có @Html.GetCart().TotalQuantity() sản phẩm!!
+                                </a>
+                            </li>
+                        }
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                               role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user" aria-hidden="true"></i>@Html.GetUsername()<span class="caret"></span></a>
+                            <ul class="dropdown-menu" style="background-color:#3A3635">
+                                @if (ui.Permission == 1)
+                                {
+                                    <li><a href="@Url.Action("Dashboard","Admin")">Dashboard</a></li>
+                                    <li role="separator" class="divider"></li>
+                                }
+                                <li><a href="@Url.Action("Profile","Account")">Thông Tin Cá Nhân</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a id="logoutLink" href="javascript:void">Thoát</a></li>
+
+                            </ul>
+                        </li>
+                    }
+                </ul>
+                @*DS NSX*@
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nhà Sản Xuất <span class="caret"></span></a>
+                        <ul class="dropdown-menu" style="background-color:#3A3635">
+                            @Html.Action("GetListSX", "Producer")
+                        </ul>
+                    </li>
+                </ul>
+                @*DS Sản phẩm*@
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    @Html.Action("GetList", "Category")
+                </ul>
+
+                 @*----------------Search-----------*@
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <div style="padding-top:15px">
+                            <a href="#search" style="background-color:transparent">Search</a>
+                            <a href="#" class="dropdown-toggle dropbtn" style="background-color:transparent" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></a>
+                            <div class="dropdown-menu" role="menu" style="background-color: #3A3635 ">
+                                <form class="form-horizontal" role="form" method="post"
+              action="@Url.Action("GetListProduct", "Search")">
+                                    <ul>
+                                        <li>
+                                            <h6 style="color:orange">
+                                                Giá từ:
+                                            </h6>
+                                            <input class="form-control" type="text" name="PriceMin" />
+
+                                            <h6 style="color:orange">
+                                                đến:
+                                            </h6>
+                                            <input class="form-control" type="text" name="PriceMax" />
+                                        </li>
+                                        <li>
+                                            <h6 style="color:orange">
+                                                Nhà Sản Xuất:
+                                            </h6>
+                                            @Html.Action("GetListProducer", "Producer")
+                                            <br />
+                                            <h6 style="color:orange">
+                                                Loại sản phẩm:
+                                            </h6>
+                                            @Html.Action("GetListCategories", "Category")
+                                            
+                                        </li>
+                                        <li>
+                                            <button type="submit" name="btnSearch" class="btn btn-primary" value="Search">Search</button>
+                                        </li>
+                                    </ul>
+
+                                </form>
+                              </div>
+                            </div>
+                    </li>
+            </ul>
+            <!-- /.navbar-collapse -->
+        </div>
+            </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <form id="frmLogout" method="post" action="@Url.Action("Logout","Account")"></form>
+   
+    <!-- Header -->
+    <header id="myCarousel" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+
+
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" >
+            <div class="item active">
+                <div class="fill" style="background-image: url('../../imgs/img/home/06.jpg'); "></div>
+                <div class="carousel-caption">
+                    <h2>Máy Chụp Hình Siêu Đẹp</h2>
+                </div>
+            </div>
+            
+            <div class="item">
+                <div class="fill" style="background-image: url('../../imgs/img/home/05.jpg');"></div>
+                <div class="carousel-caption">
+                    <h2>Điện Thoại Hiện Đại</h2>
+                </div>
+            </div>
+            <div class="item">
+                <div class="fill" style="background-image: url('../../imgs/img/home/07.JPG');"></div>
+                <div class="carousel-caption">
+                    <h2>TiVi Siêu Nét</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+            <span class="icon-prev"></span>
+        </a>
+        <a class="right carousel-control" href="#myCarousel" data-slide="next">
+            <span class="icon-next"></span>
+        </a>
+    </header>
+
+    @RenderBody();
+
+    <!-- jQuery -->
+    <script src="~/Content/jquery/jquery.min.js"></script>
+    <script src="~/Content/jquery/jquery-3.1.1.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Content/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="~/Content/js/jquery.easing.min.js" integrity="sha384-mE6eXfrb8jxl0rzJDBRanYqgBxtJ6Unn4/1F7q4xRRyIw7Vdg9jP4ycT7x1iVsgb" crossorigin="anonymous"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="~/Content/js/jqBootstrapValidation.js"></script>
+    <script src="~/Content/js/contact_me.js"></script>
+    <script src="~/Content/js/search.js"></script>
+    <!-- Theme JavaScript -->
+    <script src="~/Content/js/agency.min.js"></script>
+
+    <script src="~/Content/js/jssor.slider.mini.js"></script>
+    <script type="text/javascript">
+            $('#logoutLink').one('click', function () {
+                $('#frmLogout').submit();
+            });
+
+            //xử lí silde show
+            jQuery(document).ready(function ($) {
+                var options = {  };
+            
+                var jssor_slider1 = new $JssorSlider$("slider1_container", options);
+
+            });
+    </script>
+    <script>
+    $('.carousel').carousel({
+        interval: 5000 //changes the speed
+    })
+    </script>
+    <script type="text/javascript">
+        $(window).on('resize', function () {
+            var width = $(this).width();
+            var height = $(this).height();
+            if(width <= 600)
+            {
+                $('#myCarousel').css({
+                    'margin-top': '0px',
+                });
+            }
+            else
+            {
+                $('#myCarousel').css({
+                    'margin-top': '-50px'
+                });
+            }
+        });
+    </script>
+   
+    @if (IsSectionDefined("script"))
+    {
+        @RenderSection("script")
+    }
+
+</body>
+
+</html>

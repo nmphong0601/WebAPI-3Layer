@@ -1,0 +1,143 @@
+﻿
+@using DoAnWeb.Models
+@using DoAnWeb.Ultilities
+@model Cart
+
+
+
+@section style{
+    <link href="~/Content/css/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+
+}
+
+@section script{
+    <script src="~/Content/js/jquery.bootstrap-touchspin.min.js"></script>
+
+    @*xử lí nút bấm xóa sản phầm trong trang thanh toán*@
+    <script type="text/javascript">
+       $('a[name="aRemoveCI"]').on('click', function () {
+
+           var pId = $(this).data('id');
+           $('#pId').val(pId);
+           $('#frmRemoveCI').submit();
+       });
+
+        //xử lí ô update số lượng trong trang thanh toán tiền
+       $('input[name="inputQ"]').TouchSpin({
+           min: 1,
+           verticalbuttons: true
+       });
+        //sử lí nút bấm cập nhật trong trang thanh toán tiền
+       $('a[name="aUpdateCI"]').on('click', function () {
+
+           var pId = $(this).data('id');
+           $('#pIdUpdate').val(pId);
+           var q = $('#inputQ_' + pId).val();
+           //alert(q);
+           $('#q').val(q);
+           $('#frmUpdateCI').submit();
+       });
+    </script>
+}
+
+@if(Model.Items.Count==0){
+    <div class="panel-group text-center">
+        <h2>
+            Giỏ hàng còn trống
+        </h2>
+    </div>
+    if (Session["CheckOut"] != null)
+    {
+        <div class="alert alert-success text-center" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Chúc mừng bạn đã thanh toán thành công!</strong> Chúng tôi sẽ gửi hàng đến bạn sớm nhất
+        </div>
+        Session["CheckOut"] = null;
+    }
+}
+else
+{
+    <form id="frmRemoveCI" method="post" action="@Url.Action("Remove", "Cart")">
+        <input id="pId" type="hidden" name="proId" />
+    </form>
+
+    <form id="frmUpdateCI" method="post" action="@Url.Action("Update", "Cart")">
+        <input id="pIdUpdate" type="hidden" name="proId">
+        <input id="q" type="hidden" name="quantity" />
+    </form>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>Tên sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Thành tiền</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                         decimal total = 0;
+                        decimal amount = 0;
+                      }
+                    @foreach (var ci in Model.Items)
+                    {
+                        amount = ci.Quantity * (decimal)ci.Product.Price;
+                        total += amount;
+                        <tr>
+                            <td>@ci.Product.ProName</td>
+                            <td>@Html.Price2String((decimal)ci.Product.Price)</td>
+                            <td>
+                                <input id="inputQ_@ci.Product.ProID" name="inputQ" type="text" value="@ci.Quantity" />
+                            </td>
+                            <td>@Html.Price2String(amount)</td>
+                            <td>
+                                <a name="aRemoveCI" class="btn btn-danger btn-xs" href="javascript:void;"
+                                    title="Xóa" data-id="@ci.Product.ProID">
+                                    <i class="fa fa-close"></i>
+                                </a>
+                                <a name="aUpdateCI" class="btn btn-success btn-xs" href="javascript:void;"
+                                   title="Cập Nhật" data-id="@ci.Product.ProID">
+                                    <i class="fa fa-check"></i>
+                                </a>
+                            </td>
+                        </tr>
+                         
+                    }
+
+                    </tbody>
+                @*tfoot dùng để nhóm các thành phần cuối trong table*@
+                <tfoot>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td><h4>Tổng tiền:</h4></td>
+                        <td><h4>@Html.Price2String(total)</h4></td>
+                    </tr>
+                </tfoot>
+                </table>
+            </div>
+
+            <div class="col-md-12">
+                <form class="form horizontal" method="post" action="@Url.Action("Checkout","Cart")">
+                    <input type="hidden" id="totalPrice" name="totalPrice" value="@total"/>
+                    <a  class="btn btn-primary" href="@Url.Action("Index","Home")"
+                       title="Tiếp tục mua hàng">
+                        <i class="fa fa-shopping-bag">
+                            Tiếp tục mua hàng
+                        </i>
+                    </a>
+                    <button id="Pay" type="submit" class="btn btn-danger">
+                        <i class="fa fa-money">
+                            Thanh toán
+                        </i> 
+                    </button>
+                </form>
+            </div>
+        </div>
+}
+
+

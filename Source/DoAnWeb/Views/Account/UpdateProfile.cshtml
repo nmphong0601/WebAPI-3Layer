@@ -1,0 +1,144 @@
+﻿@using DoAnWeb.Models
+@using BotDetect.Web.Mvc
+
+@model UserInfo
+
+@section style{
+    <link href="@BotDetect.Web.CaptchaUrls.Absolute.LayoutStyleSheetUrl" rel="stylesheet" type="text/css" />
+    <link href="~/Content/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+    <style type="text/css">
+        .error {
+            color: red;
+        }
+    </style>
+}
+
+@section script{
+    <script src="~/Content/js/jquery.validate.min.js"></script>
+    <script src="~/Content/js/bootstrap-datepicker.min.js"></script>
+
+    <script type="text/javascript">
+        $('.datepicker').datepicker({
+            format: 'd/m/yyyy',
+            //chọn được ngày rồi lịch sẽ tự động tắt
+            autoclose:true
+
+        });
+        //validate xuất câu thông báo lỗi
+        $("#frmRegister").validate({
+            rules: {
+                Username: "required",
+                Password: {
+                    required: true,
+                    minlength: 4
+                },
+                //Kiểm tra mật khẩu nhập lại có khớp hay chưa
+                PasswordRetype:{
+                    equalTo: "#Password"
+                },
+                Name: "required",
+                Email:{
+                    required: true,
+                    email:true,
+                },
+
+                DOB: "required",
+            },
+
+            //Những câu thông báo xuất ra
+            messages: {
+                Username: "Cần nhập tên đăng nhập",
+                Password: {
+                    required: "Cần nhập mật khẩu",
+                    minlength:"Mật khẩu phải ít nhất 4 kí tự"
+                },
+                PasswordRetype:"Nhập lại mật khẩu chưa khớp",
+                Name: "Vui lòng nhập  tên",
+                Email: {
+                    required: "Vui lòng nhập Email",
+                    email:"Email chưa hợp lệ"
+                },
+                DOB:"Vui lòng nhập ngày sinh"
+
+            }
+        });
+    </script>
+
+}
+
+<br/>
+<div class="row">
+    @if (ViewBag.ErrorMsg != null)
+    {
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Warning!</strong> @ViewBag.ErrorMsg
+        </div>
+    }
+
+    @using (Html.BeginForm("UpdateProfile", "Account", FormMethod.Post, new { @class = "form-horizontal", id = "frmUpdate" }))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.Username, "Tên Đăng Nhập", new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.Username, new { @class = " form-control ", placeholder = "Tên đăng nhập", @readonly = "readonly" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, "Mật Khẩu mới", new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-6">
+                @Html.PasswordFor(m => m.Password, new { @class = " form-control ", placeholder = "Mật khẩu mới" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, "Nhập lại Mật Khẩu", new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-6">
+                @Html.PasswordFor(m => m.Password, new { @class = " form-control ", placeholder = " Nhập lại mật khẩu" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.FullInfo.f_Name, "HọTên", new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.FullInfo.f_Name, new { @class = " form-control ", placeholder = "Họ Tên" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.FullInfo.f_Email, "Email", new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.FullInfo.f_Email, new { @class = " form-control ", placeholder = "Email", type = "email" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.FullInfo.f_DOB, "Ngày Sinh", new { @class = "col-sm-3 control-label" })
+            <div class="col-sm-6">
+                @Html.TextBoxFor(m => m.FullInfo.f_DOB, new { @class = " form-control datepicker", placeholder = "d/m/yyyy" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-6">
+                @{ MvcCaptcha exampleCaptcha = new MvcCaptcha("ExampleCaptcha"); }
+                @Html.Captcha(exampleCaptcha)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label" for="CaptchaCode">Captcha</label>
+            <div class="col-sm-6">@Html.TextBox("CaptchaCode") </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-3 col-sm-9">
+                <button type="submit" class="btn btn-success">
+                    <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> 
+                    Cập nhật
+                </button>
+            </div>
+        </div>
+                    }
+</div>

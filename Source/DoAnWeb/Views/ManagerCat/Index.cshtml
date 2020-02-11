@@ -1,0 +1,92 @@
+﻿@using DoAnWeb.Models
+@model IList<Category>
+
+@{
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+
+@section script{
+
+    <script type="text/javascript">
+        $('a[name="aDelete"]').on('click', function () {
+
+            var pId = $(this).data('id');
+            $('#pId').val(pId);
+            $('#frmDelete').submit();
+        });
+        //sử lí nút bấm cập nhật trong trang admin
+        $('a[name="aUpdate"]').on('click', function () {
+
+            var pId = $(this).data('id');
+            $('#pIdUpdate').val(pId);
+            $('#frmUpdate').submit();
+        });
+
+    </script>
+}
+
+
+
+@if (Model.Count == 0)
+{
+    @:Không Có Loại Sản Phẩm
+
+}
+else
+{
+    <section class="content-header">
+        <h1>
+            Quản lý loại sản phẩm
+        </h1>
+    </section>
+
+    <form id="frmDelete" method="post" action="@Url.Action("Delete", "ManagerCat")">
+        <input id="pId" type="hidden" name="id" />
+    </form>
+
+    <form id="frmUpdate" method="get" action="@Url.Action("Update", "ManagerCat")">
+        <input id="pIdUpdate" type="hidden" name="id">
+    </form>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên loại sản phẩm</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int stt = 0;
+                    }
+                    @foreach (var c in Model)
+                    {
+                        stt++;
+                        <tr>
+                            <td>@stt</td>
+                            <td>@c.CatName</td>
+                            <td>
+                                <a name="aDelete" class="btn btn-danger btn-xs" href="javascript:void;"
+                                   title="Xóa" data-id="@c.CatID">
+                                    <i class="fa fa-close"></i>
+                                </a>
+                                <a name="aUpdate" class="btn btn-success btn-xs" href="javascript:void;"
+                                   title="Cập Nhật" data-id="@c.CatID">
+                                    <i class="fa fa-check"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <a class="btn btn-primary" href="@Url.Action("Add", "ManagerCat")" title="Thêm mới sản phẩm">
+                <i class="fa fa-plus"></i> &nbsp; Thêm mới loại sản phẩm
+            </a>
+        </div>
+    </div>
+                        }
+

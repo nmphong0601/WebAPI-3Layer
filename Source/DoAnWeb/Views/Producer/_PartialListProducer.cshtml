@@ -1,0 +1,16 @@
+﻿@using DoAnWeb.Models
+@model IList<Producer>
+
+@section script{
+    <script type="text/javascript">
+       var rbtnVal = $('input[name=rdoProducerName]:checked').val();
+    </script>
+    }
+
+@foreach (var c in Model)
+{
+    <li>
+        <input type="radio" value="@c.ProducerID" name="ProducerID" /> <h8 style="color:white">@c.ProducerName</h8>
+    </li>
+}
+

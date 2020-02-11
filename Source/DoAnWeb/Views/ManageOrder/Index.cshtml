@@ -1,0 +1,78 @@
+﻿@using DoAnWeb.Models
+@using DoAnWeb.Ultilities
+@model IList<Order>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_DashboardLayout.cshtml";
+}
+@section script{
+
+    <script type="text/javascript">
+       
+        //sử lí nút bấm cập nhật trong trang admin
+        $('a[name="aUpdate"]').on('click', function () {
+            var pId = $(this).data('id');
+            $('#pIdUpdate').val(pId);
+            $('#frmUpdate').submit();
+        });
+
+    </script>
+}
+
+@if (Model.Count == 0)
+{
+    @:Không Có Đơn Hàng
+}
+else
+{
+    <section class="content-header">
+        <h1>
+            Quản lý đơn hàng
+        </h1>
+    </section>
+
+    <form id="frmUpdate" method="get" action="@Url.Action("Update", "ManageOrder")">
+        <input id="pIdUpdate" type="hidden" name="id">
+    </form>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped table-hover table-condensed">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Ngày đặt hàng</th>
+                        <th>Tên khách hàng</th>
+                        <th>Tổng tiền</th>
+                        <th>Tình trạng</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int stt = 0;
+                    }
+                    @foreach (var o in Model)
+                    {
+                        stt++;
+                        <tr>
+                            <td>@stt</td>
+                            <td>@o.OrderDate</td>
+                            <td>@o.UserID</td>
+                            <td>@Html.Price2String((decimal)o.Total) </td>
+                            <td>@o.SttID</td>
+                            <td>
+                                <a name="aUpdate" class="btn btn-success btn-xs" href="javascript:void;"
+                                   title="Cập Nhật" data-id="@o.OrderID">
+                                    <i class="fa fa-check"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+</tbody>
+            </table>
+        </div>
+    </div>
+}

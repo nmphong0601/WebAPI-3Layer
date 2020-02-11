@@ -1,0 +1,10 @@
+﻿@using DoAnWeb.Models
+@model IList<Producer>
+
+@foreach (var c in Model)
+{
+    <li>
+        <a class="page-scroll" href="@Url.Action("GetListByCategorySX", "Product", new { id=c.ProducerID})">@c.ProducerName</a>
+    </li>
+}
+

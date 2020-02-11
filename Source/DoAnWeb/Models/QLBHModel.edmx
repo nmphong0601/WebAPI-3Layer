@@ -1,0 +1,691 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="QLBH_WebModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Categories">
+          <Key>
+            <PropertyRef Name="CatID" />
+          </Key>
+          <Property Name="CatID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CatName" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QLBH_Web.dbo.Comments' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Comments">
+          <Key>
+            <PropertyRef Name="ProID" />
+          </Key>
+          <Property Name="UserID" Type="int" />
+          <Property Name="Content" Type="nvarchar" MaxLength="255" />
+          <Property Name="Time" Type="datetime" />
+          <Property Name="ProID" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QLBH_Web.dbo.OrderDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="OrderDetails">
+          <Key>
+            <PropertyRef Name="OrderID" />
+            <PropertyRef Name="ProID" />
+          </Key>
+          <Property Name="OrderID" Type="int" Nullable="false" />
+          <Property Name="ProID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Price" Type="money" />
+          <Property Name="Amount" Type="money" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OrderDate" Type="datetime" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="Total" Type="money" />
+          <Property Name="SttID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Producers">
+          <Key>
+            <PropertyRef Name="ProducerID" />
+          </Key>
+          <Property Name="ProducerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProducerName" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProID" />
+          </Key>
+          <Property Name="ProID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="TinyDes" Type="nvarchar(max)" />
+          <Property Name="FullDes" Type="nvarchar(max)" />
+          <Property Name="Price" Type="money" />
+          <Property Name="ProducerID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="View" Type="int" Nullable="false" />
+          <Property Name="MadeIn" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CatID" Type="int" Nullable="false" />
+          <Property Name="ReceipDate" Type="date" />
+          <Property Name="Orders" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'QLBH_Web.dbo.Rating' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Rating">
+          <Key>
+            <PropertyRef Name="ProID" />
+          </Key>
+          <Property Name="ProID" Type="int" Nullable="false" />
+          <Property Name="Two" Type="int" />
+          <Property Name="Three" Type="int" />
+          <Property Name="Four" Type="int" />
+          <Property Name="Five" Type="int" />
+          <Property Name="One" Type="int" />
+          <Property Name="Rate" Type="int" />
+        </EntityType>
+        <EntityType Name="Statuses">
+          <Key>
+            <PropertyRef Name="SttID" />
+          </Key>
+          <Property Name="SttID" Type="int" Nullable="false" />
+          <Property Name="SttName" Type="varchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="f_ID" />
+          </Key>
+          <Property Name="f_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="f_Username" Type="nvarchar" MaxLength="50" />
+          <Property Name="f_Password" Type="nvarchar" MaxLength="255" />
+          <Property Name="f_Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="f_Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="f_DOB" Type="date" Nullable="false" />
+          <Property Name="f_Permission" Type="int" Nullable="false" />
+          <Property Name="f_Address" Type="nvarchar" MaxLength="255" />
+          <Property Name="f_Phone" Type="nvarchar" MaxLength="20" />
+        </EntityType>
+        <Association Name="FK__Comments__ProID__4316F928">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProID" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="ProID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comments__UserID__440B1D61">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="f_ID" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Order__44FF419A">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__ProID__45F365D3">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="OrderDetails" Type="Self.OrderDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProID" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="ProID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__Status__47DBAE45">
+          <End Role="Statuses" Type="Self.Statuses" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statuses">
+              <PropertyRef Name="SttID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="SttID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__UserID__46E78A0C">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="f_ID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Products__CatID__48CFD27E">
+          <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CatID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="CatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Products__Produc__49C3F6B7">
+          <End Role="Producers" Type="Self.Producers" Multiplicity="1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producers">
+              <PropertyRef Name="ProducerID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProducerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Rating__ProID__4AB81AF0">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="Rating" Type="Self.Rating" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProID" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="ProID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLBH_WebModelStoreContainer">
+          <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Producers" EntityType="Self.Producers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Statuses" EntityType="Self.Statuses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Comments" EntityType="Self.Comments" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Comments].[UserID] AS [UserID], 
+    [Comments].[Content] AS [Content], 
+    [Comments].[Time] AS [Time], 
+    [Comments].[ProID] AS [ProID]
+    FROM [dbo].[Comments] AS [Comments]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetails" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [OrderDetails].[OrderID] AS [OrderID], 
+    [OrderDetails].[ProID] AS [ProID], 
+    [OrderDetails].[Quantity] AS [Quantity], 
+    [OrderDetails].[Price] AS [Price], 
+    [OrderDetails].[Amount] AS [Amount]
+    FROM [dbo].[OrderDetails] AS [OrderDetails]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Rating" EntityType="Self.Rating" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Rating].[ProID] AS [ProID], 
+    [Rating].[Two] AS [Two], 
+    [Rating].[Three] AS [Three], 
+    [Rating].[Four] AS [Four], 
+    [Rating].[Five] AS [Five], 
+    [Rating].[One] AS [One], 
+    [Rating].[Rate] AS [Rate]
+    FROM [dbo].[Rating] AS [Rating]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK__Comments__ProID__4316F928" Association="Self.FK__Comments__ProID__4316F928">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comments__UserID__440B1D61" Association="Self.FK__Comments__UserID__440B1D61">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Order__44FF419A" Association="Self.FK__OrderDeta__Order__44FF419A">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__ProID__45F365D3" Association="Self.FK__OrderDeta__ProID__45F365D3">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__Status__47DBAE45" Association="Self.FK__Orders__Status__47DBAE45">
+            <End Role="Statuses" EntitySet="Statuses" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__UserID__46E78A0C" Association="Self.FK__Orders__UserID__46E78A0C">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Products__CatID__48CFD27E" Association="Self.FK__Products__CatID__48CFD27E">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Products__Produc__49C3F6B7" Association="Self.FK__Products__Produc__49C3F6B7">
+            <End Role="Producers" EntitySet="Producers" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Rating__ProID__4AB81AF0" Association="Self.FK__Rating__ProID__4AB81AF0">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Rating" EntitySet="Rating" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="QLBH_WebModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Category">
+          <Key>
+            <PropertyRef Name="CatID" />
+          </Key>
+          <Property Name="CatID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CatName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Products__CatID__48CFD27E" FromRole="Categories" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="Total" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="SttID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__Order__44FF419A" FromRole="Orders" ToRole="OrderDetails" />
+          <NavigationProperty Name="Status" Relationship="Self.FK__Orders__Status__47DBAE45" FromRole="Orders" ToRole="Statuses" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Orders__UserID__46E78A0C" FromRole="Orders" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="Producer">
+          <Key>
+            <PropertyRef Name="ProducerID" />
+          </Key>
+          <Property Name="ProducerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProducerName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Products" Relationship="Self.FK__Products__Produc__49C3F6B7" FromRole="Producers" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProID" />
+          </Key>
+          <Property Name="ProID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TinyDes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FullDes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="ProducerID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="View" Type="Int32" Nullable="false" />
+          <Property Name="MadeIn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CatID" Type="Int32" Nullable="false" />
+          <Property Name="ReceipDate" Type="DateTime" Precision="0" />
+          <Property Name="Orders" Type="Int32" />
+          <NavigationProperty Name="Category" Relationship="Self.FK__Products__CatID__48CFD27E" FromRole="Products" ToRole="Categories" />
+          <NavigationProperty Name="Producer" Relationship="Self.FK__Products__Produc__49C3F6B7" FromRole="Products" ToRole="Producers" />
+          <NavigationProperty Name="Comment" Relationship="Self.FK__Comments__ProID__4316F928" FromRole="Products" ToRole="Comments" />
+          <NavigationProperty Name="OrderDetails" Relationship="Self.FK__OrderDeta__ProID__45F365D3" FromRole="Products" ToRole="OrderDetails" />
+          <NavigationProperty Name="Rating" Relationship="Self.FK__Rating__ProID__4AB81AF0" FromRole="Products" ToRole="Rating" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="SttID" />
+          </Key>
+          <Property Name="SttID" Type="Int32" Nullable="false" />
+          <Property Name="SttName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__Status__47DBAE45" FromRole="Statuses" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="f_ID" />
+          </Key>
+          <Property Name="f_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="f_Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="f_Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="f_Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="f_Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="f_DOB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="f_Permission" Type="Int32" Nullable="false" />
+          <Property Name="f_Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="f_Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK__Orders__UserID__46E78A0C" FromRole="Users" ToRole="Orders" />
+          <NavigationProperty Name="Comments" Relationship="Self.FK__Comments__UserID__440B1D61" FromRole="Users" ToRole="Comments" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="ProID" />
+          </Key>
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="Content" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Time" Type="DateTime" Precision="3" />
+          <Property Name="ProID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__Comments__ProID__4316F928" FromRole="Comments" ToRole="Products" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Comments__UserID__440B1D61" FromRole="Comments" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="OrderDetail">
+          <Key>
+            <PropertyRef Name="OrderID" />
+            <PropertyRef Name="ProID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="ProID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" />
+          <NavigationProperty Name="Order" Relationship="Self.FK__OrderDeta__Order__44FF419A" FromRole="OrderDetails" ToRole="Orders" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__OrderDeta__ProID__45F365D3" FromRole="OrderDetails" ToRole="Products" />
+        </EntityType>
+        <EntityType Name="Rating">
+          <Key>
+            <PropertyRef Name="ProID" />
+          </Key>
+          <Property Name="ProID" Type="Int32" Nullable="false" />
+          <Property Name="Two" Type="Int32" />
+          <Property Name="Three" Type="Int32" />
+          <Property Name="Four" Type="Int32" />
+          <Property Name="Five" Type="Int32" />
+          <Property Name="One" Type="Int32" />
+          <Property Name="Rate" Type="Int32" />
+          <NavigationProperty Name="Product" Relationship="Self.FK__Rating__ProID__4AB81AF0" FromRole="Rating" ToRole="Products" />
+        </EntityType>
+        <Association Name="FK__Products__CatID__48CFD27E">
+          <End Role="Categories" Type="Self.Category" Multiplicity="1" />
+          <End Role="Products" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Categories">
+              <PropertyRef Name="CatID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="CatID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__Order__44FF419A">
+          <End Role="Orders" Type="Self.Order" Multiplicity="1" />
+          <End Role="OrderDetails" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__Status__47DBAE45">
+          <End Role="Statuses" Type="Self.Status" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Statuses">
+              <PropertyRef Name="SttID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="SttID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Orders__UserID__46E78A0C">
+          <End Role="Users" Type="Self.User" Multiplicity="1" />
+          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="f_ID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Products__Produc__49C3F6B7">
+          <End Role="Producers" Type="Self.Producer" Multiplicity="1" />
+          <End Role="Products" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Producers">
+              <PropertyRef Name="ProducerID" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProducerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comments__ProID__4316F928">
+          <End Role="Products" Type="Self.Product" Multiplicity="1" />
+          <End Role="Comments" Type="Self.Comment" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProID" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="ProID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__OrderDeta__ProID__45F365D3">
+          <End Role="Products" Type="Self.Product" Multiplicity="1" />
+          <End Role="OrderDetails" Type="Self.OrderDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProID" />
+            </Principal>
+            <Dependent Role="OrderDetails">
+              <PropertyRef Name="ProID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Rating__ProID__4AB81AF0">
+          <End Role="Products" Type="Self.Product" Multiplicity="1" />
+          <End Role="Rating" Type="Self.Rating" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProID" />
+            </Principal>
+            <Dependent Role="Rating">
+              <PropertyRef Name="ProID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Comments__UserID__440B1D61">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Comments" Type="Self.Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="f_ID" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="QLBH_WebEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Categories" EntityType="Self.Category" />
+          <EntitySet Name="Orders" EntityType="Self.Order" />
+          <EntitySet Name="Producers" EntityType="Self.Producer" />
+          <EntitySet Name="Products" EntityType="Self.Product" />
+          <EntitySet Name="Statuses" EntityType="Self.Status" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="OrderDetails" EntityType="Self.OrderDetail" />
+          <EntitySet Name="Ratings" EntityType="Self.Rating" />
+          <AssociationSet Name="FK__Products__CatID__48CFD27E" Association="Self.FK__Products__CatID__48CFD27E">
+            <End Role="Categories" EntitySet="Categories" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__Order__44FF419A" Association="Self.FK__OrderDeta__Order__44FF419A">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__Status__47DBAE45" Association="Self.FK__Orders__Status__47DBAE45">
+            <End Role="Statuses" EntitySet="Statuses" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Orders__UserID__46E78A0C" Association="Self.FK__Orders__UserID__46E78A0C">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Products__Produc__49C3F6B7" Association="Self.FK__Products__Produc__49C3F6B7">
+            <End Role="Producers" EntitySet="Producers" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comments__ProID__4316F928" Association="Self.FK__Comments__ProID__4316F928">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK__OrderDeta__ProID__45F365D3" Association="Self.FK__OrderDeta__ProID__45F365D3">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="OrderDetails" EntitySet="OrderDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Rating__ProID__4AB81AF0" Association="Self.FK__Rating__ProID__4AB81AF0">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="Rating" EntitySet="Ratings" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Comments__UserID__440B1D61" Association="Self.FK__Comments__UserID__440B1D61">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="QLBH_WebModelStoreContainer" CdmEntityContainer="QLBH_WebEntities">
+          <EntitySetMapping Name="Categories">
+            <EntityTypeMapping TypeName="QLBH_WebModel.Category">
+              <MappingFragment StoreEntitySet="Categories">
+                <ScalarProperty Name="CatID" ColumnName="CatID" />
+                <ScalarProperty Name="CatName" ColumnName="CatName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="QLBH_WebModel.Order">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="SttID" ColumnName="SttID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Producers">
+            <EntityTypeMapping TypeName="QLBH_WebModel.Producer">
+              <MappingFragment StoreEntitySet="Producers">
+                <ScalarProperty Name="ProducerID" ColumnName="ProducerID" />
+                <ScalarProperty Name="ProducerName" ColumnName="ProducerName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="QLBH_WebModel.Product">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="ProID" ColumnName="ProID" />
+                <ScalarProperty Name="ProName" ColumnName="ProName" />
+                <ScalarProperty Name="TinyDes" ColumnName="TinyDes" />
+                <ScalarProperty Name="FullDes" ColumnName="FullDes" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="ProducerID" ColumnName="ProducerID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="View" ColumnName="View" />
+                <ScalarProperty Name="MadeIn" ColumnName="MadeIn" />
+                <ScalarProperty Name="CatID" ColumnName="CatID" />
+                <ScalarProperty Name="ReceipDate" ColumnName="ReceipDate" />
+                <ScalarProperty Name="Orders" ColumnName="Orders" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Statuses">
+            <EntityTypeMapping TypeName="QLBH_WebModel.Status">
+              <MappingFragment StoreEntitySet="Statuses">
+                <ScalarProperty Name="SttID" ColumnName="SttID" />
+                <ScalarProperty Name="SttName" ColumnName="SttName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="QLBH_WebModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="f_ID" ColumnName="f_ID" />
+                <ScalarProperty Name="f_Username" ColumnName="f_Username" />
+                <ScalarProperty Name="f_Password" ColumnName="f_Password" />
+                <ScalarProperty Name="f_Name" ColumnName="f_Name" />
+                <ScalarProperty Name="f_Email" ColumnName="f_Email" />
+                <ScalarProperty Name="f_DOB" ColumnName="f_DOB" />
+                <ScalarProperty Name="f_Permission" ColumnName="f_Permission" />
+                <ScalarProperty Name="f_Address" ColumnName="f_Address" />
+                <ScalarProperty Name="f_Phone" ColumnName="f_Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Comments">
+            <EntityTypeMapping TypeName="QLBH_WebModel.Comment">
+              <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="ProID" ColumnName="ProID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderDetails">
+            <EntityTypeMapping TypeName="QLBH_WebModel.OrderDetail">
+              <MappingFragment StoreEntitySet="OrderDetails">
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="ProID" ColumnName="ProID" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ratings">
+            <EntityTypeMapping TypeName="QLBH_WebModel.Rating">
+              <MappingFragment StoreEntitySet="Rating">
+                <ScalarProperty Name="ProID" ColumnName="ProID" />
+                <ScalarProperty Name="Two" ColumnName="Two" />
+                <ScalarProperty Name="Three" ColumnName="Three" />
+                <ScalarProperty Name="Four" ColumnName="Four" />
+                <ScalarProperty Name="Five" ColumnName="Five" />
+                <ScalarProperty Name="One" ColumnName="One" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

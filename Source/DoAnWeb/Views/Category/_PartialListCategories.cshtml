@@ -1,0 +1,9 @@
+﻿@using DoAnWeb.Models
+@model IList<Category>
+
+@foreach (var c in Model)
+{
+    <li>
+        <input type="radio" value="@c.CatID" name="CatID"/> <h8 style="color:white">@c.CatName</h8>
+    </li>
+}

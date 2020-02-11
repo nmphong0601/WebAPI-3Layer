@@ -1,0 +1,203 @@
+﻿@using DoAnWeb.Models
+@using DoAnWeb.Ultilities
+@model  Product
+
+
+
+@section style{
+    <link href="~/Content/css/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+    <link href="~/Content/css/comment.css" rel="stylesheet" />
+    <style type="text/css">
+       img{
+           width:auto;
+           height:auto;
+       }
+      .caption{
+          margin-left: 30%;
+      }
+      body{
+          background-color: #eeeeee;
+      }
+      .panel-white{
+          background-color: #eeeeee;
+          border: 0px;
+      }
+      .panel-shadow {
+          box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px;
+      }
+      .fa{
+          color: grey;
+      }
+    </style>
+}
+@section script{
+    <script src="~/Content/js/jquery.bootstrap-touchspin.min.js"></script>
+   
+    <script type="text/javascript">
+        $("input[name='quantity']").TouchSpin({
+            initval: 1
+        });
+        $('a[name="aAddComment"]').on('click', function () {
+            $('#pId').val(@Model.ProID);
+            var u = $(this).data('id');
+            $('#uName').val(u);
+            var content = $('#txtComment').val();
+            $('#content').val(content);
+            var d = new Date();
+            var strDate = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+            $('#dayCM').val(strDate);
+            //alert(strDate);
+            $('#frmAddCM').submit();
+
+            $('a[name="aAddItem"]').on('click', function () {
+
+                var pId = $(this).data('id');
+                $('#pId').val(pId);
+                $('#cId').val(@ViewBag.cId);
+                $('#p').val(@ViewBag.curPage);
+                $('#frmAddCI').submit();
+            });
+            $('div[name="stars"]').on('click', function () {
+                var pId = $(this).data('id');
+                $('#proId').val(pId);
+                $('#catId').val(@ViewBag.cId);
+                $('#page').val(@ViewBag.curPage);
+                $('#frmRate').submit();
+            });
+        });
+    </script>
+}
+<form id="frmAddCM" method="post" action="@Url.Action("AddComment", "Product")">
+    <input id="pId" type="hidden" name="proId" />
+    <input id="uName" type="hidden" name="uName" />
+    <input id="content" type="hidden" name="content" />
+    <input id="dayCM" type="hidden" name="dayCM" />
+</form>
+<div class="container-fluid">
+    <div class="row">
+        <div class="container">
+            <div class="col-md-12">
+                <div class="panel panel-white post panel-shadow">
+                    <div class="post-heading">
+                        <div class="text-center col-sm-12">
+                            <img src="~/imgs/imgs/sp/@Model.ProID/main.jpg" title="@Model.ProName" />
+                        </div>
+                        <div class="center-block col-sm-12">
+                            <h3 class="caption-green"> @Model.ProName</h3>
+                            <h4 class="caption-red"> Giá: @string.Format("{0:C}", @Model.Price)</h4>
+                            <h4> Trong Kho:@Model.Quantity </h4>   
+                        </div>
+                    </div>
+                    <div class="post-description">
+                        <p> @Html.Raw(Model.FullDes)</p>
+                        @if (Session["Logged"] != null)
+                        {
+                            var u = Session["Logged"] as UserInfo;
+                            if (u.Permission != 1)
+                            {
+                                <div>
+                                    <h4 style="color:red">Mua Hàng:</h4>
+                                </div>
+                                    <form class=left-block form-horizontal" method="post"
+                                            action="@Url.Action("Add","Cart")" style="width:50%">
+                                        <input type="hidden" value="@Model.ProID" name="proId" />
+                                        <div class="input-group">
+                                            <input name="quantity" type="text" class="form-control">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-success" type="submit">
+                                                    <i class="fa fa-cart-plus"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </form><br style="height: 300px" />
+                            }
+                        }
+                    </div>
+                    <div class="post-footer">
+                        <div class="panel text-center">
+                            <h3>Nhận xét/đánh giá sản phẩm</h3>
+                        </div>
+                        @if (Session["Logged"] != null)
+                        {
+                            var u = Session["Logged"] as UserInfo;
+                            <div class="input-group">
+                                <input id="txtComment" name="txtComment" class="form-control" placeholder="Bình luận..." type="text" />
+                                <span class="input-group-addon">
+                                    <a id="aAddComment" name="aAddComment" href="javascript:void;" role="button" data-id="@u.Username"><i class="fa fa-edit"></i></a>
+                                </span>
+                            </div>
+                        }
+                        @{
+                            var listCom = ViewBag.ListComment as List<Comment>;
+                            if (listCom.Count != 0)
+                            {
+                                foreach (Comment com in listCom)
+                                {
+                                    var ui = Session["Logged"] as UserInfo;
+
+                                    using (var dc = new QLBH_WebEntities())
+                                    {
+                                        var u = dc.Users.Where(us => us.f_ID == com.UserID).FirstOrDefault();
+                                        <ul class="comments-list">
+                                            <li class="comment">
+                                                <a class="pull-left" href="#">
+                                                    <img class="avatar" src="~/imgs/profile/avatar.png" alt="avatar">
+                                                </a>
+                                                <div class="comment-body">
+                                                    <div class="comment-heading">
+                                                        @if (ui != null && ui.Username == u.f_Username)
+                                                        {
+                                                            <h4 class="user" style="color:Highlight; font-style:italic">@u.f_Username</h4>
+                                                        }
+                                                        else
+                                                        {
+                                                            <h4 class="user">@u.f_Username</h4>
+                                                        }
+                                                        <h5 class="time">@com.Time</h5>
+                                                    </div>
+                                                    <p>@com.Content</p>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <div class="text-center">
+                                    <br/>
+                                    <h5>Không có đánh giá nào</h5>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
+@Html.Action("ProductTheSame", "Product", new { CatID = @Model.CatID, ProID = @Model.ProID })
+@Html.Action("ProductAsProducer", "Product", new { ProducerID = @Model.ProducerID, ProID = @Model.ProID })
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+       
+
+
+
+
+
+
+
+

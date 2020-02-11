@@ -1,0 +1,345 @@
+﻿@using DoAnWeb.Models
+@using DoAnWeb.Ultilities
+
+@model IList<Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@section script{
+    @*xử lí nút bấm mua hàng*@
+    <script type="text/javascript">
+       $('a[name="aAddItem"]').on('click', function () {
+           var pId = $(this).data('id');
+           $('#pId').val(pId);
+           $('#frmAddCI').submit();
+       });
+       $('div[name="stars"]').on('click', function () {
+           var pId = $(this).data('id');
+           $('#proId').val(pId);
+           $('#frmRate').submit();
+       });
+    </script>
+    @*include file js đánh giá*@
+    <script src="~/Content/js/rating.star.js"></script>
+}
+<form id="frmRate" method="post" action="@Url.Action("RateProductIndex", "Product")">
+    <input id="proId" type="hidden" name="proId" />
+    <input id="rateId" type="hidden" name="rateId" value="0" />
+    <input id="rate" type="hidden" name="rate" value="0" />
+</form>
+<form id="frmAddCI" method="post" action="@Url.Action("AddCIFromIndex", "Cart")">
+    <input id="pId" type="hidden" name="proId" />
+</form>
+
+<!-- Services Section -->
+<section id="portfolio">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">10 sản phẩm mới nhất</h2>
+            </div>
+        </div>
+        <div class="row text-center">
+            @{
+                var listDate = Model.OrderByDescending(p => p.ReceipDate).Take(10);
+                foreach (var p in listDate)
+                {
+                    <div class="col-md-4 col-sm-6 portfolio-item">
+                        <a href="#@p.ProID" class="portfolio-link" data-toggle="modal" style="height: 360px; background-color: white; border: #eeeeee 1px solid;">
+                            <div class="portfolio-hover">
+                                <div class="portfolio-hover-content">
+                                    <i class="fa fa-eye fa-3x"></i>
+                                </div>
+                            </div>
+                            <img src="~/imgs/imgs/sp/@p.ProID/mini.jpg" class="img-thumbnail" alt="" style="border:0px;">
+                        </a>
+                        <div class="portfolio-caption" style="border:#eeeeee 1px solid; background-color: #eeeeee;  ">
+                            <h4>@p.ProName.Substring(0, 14)...</h4>
+                            @if (Session["Logged"] != null)
+                            {
+                                using (var dc = new QLBH_WebEntities())
+                                {
+                                    var r = dc.Ratings.Where(m => m.ProID == p.ProID).FirstOrDefault();
+                                    if (r == null)
+                                    {
+
+                                        <div id="stars" name="stars" class="starrr" data-id="@p.ProID"></div>
+                                            <em>0 / 5</em>
+                                    }
+                                    else
+                                    {
+                                        <div id="stars" name="stars" class="starrr" data-rating="@r.Rate" data-id="@p.ProID"></div><em>@r.Rate / 5</em>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Grid Section -->
+<section id="portfolio" class="bg-light-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">10 sản phẩm bán chạy nhất</h2>
+            </div>
+        </div>
+        <div class="row text-center">
+            @{
+                var list = Model.OrderByDescending(p => p.Orders).Take(10);
+                foreach (var p in list)
+                {
+                    <div class="col-md-4 col-sm-6 portfolio-item">
+                        <a href="#@p.ProID" class="portfolio-link" data-toggle="modal" style="height: 360px; background-color: white;">
+                            <div class="portfolio-hover">
+                                <div class="portfolio-hover-content">
+                                    <i class="fa fa-eye fa-3x"></i>
+                                </div>
+                            </div>
+                            <img src="~/imgs/imgs/sp/@p.ProID/mini.jpg" class="img-thumbnail" alt="" style="border:0px;">
+                        </a>
+                        <div class="portfolio-caption" style="border:#eeeeee 1px solid;">
+                            <h4>@p.ProName.Substring(0, 14)...</h4>
+                            @if (Session["Logged"] != null)
+                            {
+                                using (var dc = new QLBH_WebEntities())
+                                {
+                                    var r = dc.Ratings.Where(m => m.ProID == p.ProID).FirstOrDefault();
+                                    if (r == null)
+                                    {
+
+                                        <div id="stars" name="stars" class="starrr" data-id="@p.ProID"></div>
+                                        <em>0 / 5</em>
+                                    }
+                                    else
+                                    {
+                                        <div id="stars" name="stars" class="starrr" data-rating="@r.Rate" data-id="@p.ProID"></div><em>@r.Rate / 5</em>
+                                    }
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+
+            }
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section id="about">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">10 sản phẩm xem nhiều nhất</h2>
+                <br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <ul class="timeline">
+                    @{
+                        var listManyView = Model.OrderByDescending(p => p.View).Take(10);
+                        int i = 1;
+                        foreach (var p in listManyView)
+                        {
+                            if (i % 2 != 0)
+                            {
+                                <li>
+                                    <div class="timeline-image">
+                                        <img class="img-circle img-responsive" src="~/imgs/imgs/sp/@p.ProID/mini.jpg" alt="" style="width:156px; height: 156px;">
+                                    </div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <h4>@p.ProName</h4>
+                                        </div>
+                                        <div class="timeline-body">
+                                            @Html.Raw(p.TinyDes)
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="timeline-inverted">
+                                    <div class="timeline-image">
+                                        <img class="img-circle img-responsive" src="~/imgs/imgs/sp/@p.ProID/mini.jpg" alt="" style="width:156px; height: 156px;">
+                                    </div>
+                                    <div class="timeline-panel">
+                                        <div class="timeline-heading">
+                                            <h4>@p.ProName</h4>
+                                        </div>
+                                        <div class="timeline-body">
+                                            @Html.Raw(p.TinyDes)
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                            i++;
+                        }
+                    }                  
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section id="team" class="bg-light-gray">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading">Our Amazing Team</h2>
+                <h3 class="section-subheading text-muted">Never study to be successful, study for self efficiency. Don’t run behind success. Follow behind excellence, success will come all way behind you. (Three Idiots)</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img src="~/imgs/imgs/image/Team/Hao.jpg" class="img-responsive img-circle" alt="">
+                    <h4>Lương Kiên Hào</h4>
+                    <p class="text-muted">Leader</p>
+                    <ul class="list-inline social-buttons">
+                        <li>
+                            <a href="https://www.facebook.com/luongkienhao"><i class="fa fa-facebook"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img src="~/imgs/imgs/image/Team/Phong.jpg" class="img-responsive img-circle" alt="">
+                    <h4>Nguyễn Minh Phong</h4>
+                    <p class="text-muted">Partner</p>
+                    <ul class="list-inline social-buttons">
+                        <li>
+                            <a href="https://www.facebook.com/Zin.Kick"><i class="fa fa-facebook"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img src="~/imgs/imgs/image/Team/Huyen.jpg" class="img-responsive img-circle" alt="">
+                    <h4>Nguyễn Huyền</h4>
+                    <p class="text-muted">Partner</p>
+                    <ul class="list-inline social-buttons">
+                        <li>
+                            <a href="https://www.facebook.com/nguyenhuyen214"><i class="fa fa-facebook"></i></a>
+                        </li>   
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img src="~/imgs/imgs/image/Team/Oanh.jpg" class="img-responsive img-circle" alt="" style="width:370px; height:370px;">
+                    <h4>Kiều Oanh</h4>
+                    <p class="text-muted">Partner</p>
+                    <ul class="list-inline social-buttons">
+                        <li>
+                            <a href="https://www.facebook.com/profile.php?id=100009271279126"><i class="fa fa-facebook"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="team-member">
+                    <img src="~/imgs/imgs/image/Team/Lieu.jpg" class="img-responsive img-circle" alt="" style="width:370px; height:370px;">
+                    <h4>Liễu Nguyễn</h4>
+                    <p class="text-muted">Partner</p>
+                    <ul class="list-inline social-buttons">
+                        <li>
+                            <a href="https://www.facebook.com/con.heo.5203577"><i class="fa fa-facebook"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <span class="copyright">Copyright &copy; The Best 2017</span>
+            </div>
+            <div class="col-md-4">
+                <ul class="list-inline social-buttons">
+                    <li>
+                        <a href="https://www.facebook.com/Zin.Kick"><i class="fa fa-facebook"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <ul class="list-inline quicklinks">
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">Home page</a>
+                    </li>
+                    <li>
+                        @if (Session["Logged"] != null)
+                        {
+                            <a href="@Url.Action("Profile", "Account")">Profile</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Profile", "Account")">Register</a>
+                        }
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Portfolio Modal -->
+@foreach (var p in Model)
+{
+    <div class="portfolio-modal modal fade" id="@p.ProID" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <!-- Project Details Go Here -->
+                                <h2>@p.ProName</h2>
+                                <p class="item-intro text-muted">@p.MadeIn</p>
+                                <img class="img-responsive img-centered" src="~/imgs/imgs/sp/@p.ProID/main.jpg" alt="">
+                                @Html.Raw(p.FullDes)
+                                <div class="panel text-center">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Đóng tab</button>
+                                    @if (Session["Logged"] != null)
+                                    {
+                                        var u = Session["Logged"] as UserInfo;
+                                        if (u.Permission == 0)
+                                        {
+                                            <a name="aAddItem" href="javascript:void;" class="btn btn-success" role="button" data-id="@p.ProID">
+                                                <i class="fa fa-cart-plus"></i>  Đặt Hàng
+                                            </a>
+                                        }
+                                    }
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

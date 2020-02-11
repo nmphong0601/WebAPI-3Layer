@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="be151fc823134eb28071d2238c6e3989" Name="Diagram1">
+        <EntityTypeShape EntityType="QLBH_WebModel.Category" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBH_WebModel.Order" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBH_WebModel.Producer" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBH_WebModel.Product" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBH_WebModel.Status" Width="1.5" PointX="0.75" PointY="8.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBH_WebModel.User" Width="1.5" PointX="0.75" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBH_WebModel.Comment" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBH_WebModel.OrderDetail" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLBH_WebModel.Rating" Width="1.5" PointX="5.25" PointY="10.25" IsExpanded="true" />
+        <AssociationConnector Association="QLBH_WebModel.FK__Products__CatID__48CFD27E" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBH_WebModel.FK__OrderDeta__Order__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBH_WebModel.FK__Orders__Status__47DBAE45" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBH_WebModel.FK__Orders__UserID__46E78A0C" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBH_WebModel.FK__Products__Produc__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBH_WebModel.FK__Comments__ProID__4316F928" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBH_WebModel.FK__OrderDeta__ProID__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBH_WebModel.FK__Rating__ProID__4AB81AF0" ManuallyRouted="false" />
+        <AssociationConnector Association="QLBH_WebModel.FK__Comments__UserID__440B1D61" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

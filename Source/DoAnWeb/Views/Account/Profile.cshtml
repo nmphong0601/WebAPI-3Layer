@@ -1,0 +1,71 @@
+﻿@using DoAnWeb.Models
+@model UserInfo
+
+
+@{ 
+    var ui = Session["Logged"] as UserInfo;
+    var u = new User();
+    using (var qlbh = new QLBH_WebEntities())
+    {
+        u = qlbh.Users.Where(m => m.f_Username == ui.Username).FirstOrDefault();
+    }
+}
+<br/>
+<div class="col-md-12">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">@u.f_Name</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3 col-lg-3" align="center"> <img alt="User Pic" src="~/imgs/profile/avatar.png" class="img-circle img-responsive"> </div>
+                <div class="col-md-9 col-lg-9">
+                    <table class="table table-user-information">
+                        <tbody>
+                            <tr>
+                                <th>Họ tên:</th>
+                                <td>@u.f_Name</td>
+                            </tr>
+                            <tr>
+                                <th>Tên đăng nhập:</th>
+                                <td>@ui.Username</td>
+                            </tr>
+                            <tr>
+                                <th>Mật khẩu:</th>
+                                <td>@ui.Password</td>
+                            </tr>
+                            <tr>
+                                <th>Ngày sinh:</th>
+                                <td>
+                                    @u.f_DOB.ToString("dd/MM/yyyy")
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td><a href="@u.f_Email">@u.f_Email</a></td>
+                            </tr>
+                            <tr>
+                                <th>Loại người dùng:</th>
+                                @{
+                                    var per = ui.Permission;
+                                    switch (per)
+                                    {
+                                        case 0:
+                                            <td>Khách hàng</td>
+                                            break;
+                                        case 1:
+                                            <td>Quản trị viên</td>
+                                            break;
+                                    }
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <a href="@Url.Action("UpdateProfile", "Account")" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+        </div>
+    </div>
+</div>
