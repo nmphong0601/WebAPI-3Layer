@@ -38,38 +38,38 @@ namespace DAO.Factory
     {
         public ApiMappingProfile()
         {
-            CreateMap<ApiUser, User>().ForMember(d => d.f_ID, o => o.MapFrom(s => s));
-            CreateMap<User, ApiUser>().ForMember(d => d.f_ID, o => o.MapFrom(s => s));
+            CreateMap<ApiUser, User>().ReverseMap();
+            CreateMap<User, ApiUser>().ReverseMap();
 
-            CreateMap<ApiStatues, Status>();
-            CreateMap<Status, ApiStatues>();
+            CreateMap<ApiStatues, Status>().ReverseMap();
+            CreateMap<Status, ApiStatues>().ReverseMap();
 
-            CreateMap<ApiRating, Rating>();
-            CreateMap<Rating, ApiRating>();
+            CreateMap<ApiRating, Rating>().ReverseMap();
+            CreateMap<Rating, ApiRating>().ReverseMap();
 
-            CreateMap<ApiProduct, Product>();
-            CreateMap<Product, ApiProduct>();
+            CreateMap<ApiProduct, Product>().ReverseMap();
+            CreateMap<Product, ApiProduct>().ReverseMap();
 
-            CreateMap<ApiProducer, Producer>();
-            CreateMap<Producer, ApiProducer>();
+            CreateMap<ApiProducer, Producer>().ReverseMap();
+            CreateMap<Producer, ApiProducer>().ReverseMap();
 
-            CreateMap<ApiOrderDetail, OrderDetail>();
-            CreateMap<OrderDetail, ApiOrderDetail>();
+            CreateMap<ApiOrderDetail, OrderDetail>().ReverseMap();
+            CreateMap<OrderDetail, ApiOrderDetail>().ReverseMap();
 
-            CreateMap<ApiOrder, Order>();
-            CreateMap<Order, ApiOrder>();
+            CreateMap<ApiOrder, Order>().ReverseMap();
+            CreateMap<Order, ApiOrder>().ReverseMap();
 
-            CreateMap<ApiComment, Comment>();
-            CreateMap<Comment, ApiComment>();
+            CreateMap<ApiComment, Comment>().ReverseMap();
+            CreateMap<Comment, ApiComment>().ReverseMap();
 
-            CreateMap<ApiCategory, Category>();
-            CreateMap<Category, ApiCategory>();
+            CreateMap<ApiCategory, Category>().ReverseMap();
+            CreateMap<Category, ApiCategory>().ReverseMap();
 
-            CreateMap<ApiCart, Cart>();
-            CreateMap<Cart, ApiCart>();
+            CreateMap<ApiCart, Cart>().ReverseMap();
+            CreateMap<Cart, ApiCart>().ReverseMap();
 
-            CreateMap<ApiCartItem, CartItem>();
-            CreateMap<CartItem, ApiCartItem>();
+            CreateMap<ApiCartItem, CartItem>().ReverseMap();
+            CreateMap<CartItem, ApiCartItem>().ReverseMap();
         }
     }
 }
