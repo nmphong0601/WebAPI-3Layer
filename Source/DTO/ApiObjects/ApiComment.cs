@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO.ApiObjects
 {
-    public class ApiComment
+    public class ApiComment: ApiEntity
     {
         public ApiComment()
         {

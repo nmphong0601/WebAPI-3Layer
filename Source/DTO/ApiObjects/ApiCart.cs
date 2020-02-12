@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO.ApiObjects
 {
-    public class ApiCart
+    public class ApiCart: ApiEntity
     {
         public ApiCart()
         {

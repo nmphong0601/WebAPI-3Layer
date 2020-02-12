@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace DTO.ApiObjects
 {
-    public class ApiProduct
+    public class ApiProduct: ApiEntity
     {
         public ApiProduct()
         {
-            OrderDetails = new List<ApiEntity>();
+            OrderDetails = new List<ApiOrderDetail>();
         }
 
         public int? ProID { get; set; }
@@ -29,7 +29,7 @@ namespace DTO.ApiObjects
         public ApiCategory Category { get; set; }
         public ApiProducer Producer { get; set; }
         public ApiComment Comment { get; set; }
-        public List<ApiEntity> OrderDetails { get; set; }
+        public List<ApiOrderDetail> OrderDetails { get; set; }
         public ApiRating Rating { get; set; }
     }
 }

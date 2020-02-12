@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace DTO.ApiObjects
 {
-    public class ApiUser
+    public class ApiUser: ApiEntity
     {
         public ApiUser()
         {
-            Orders = new List<ApiEntity>();
-            Comments = new List<ApiEntity>();
+            Orders = new List<ApiOrder>();
+            Comments = new List<ApiComment>();
         }
 
         public int? f_ID { get; set; }
@@ -24,7 +24,7 @@ namespace DTO.ApiObjects
         public string f_Address { get; set; }
         public string f_Phone { get; set; }
 
-        public List<ApiEntity> Orders { get; set; }
-        public List<ApiEntity> Comments { get; set; }
+        public List<ApiOrder> Orders { get; set; }
+        public List<ApiComment> Comments { get; set; }
     }
 }

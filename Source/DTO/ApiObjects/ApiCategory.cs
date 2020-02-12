@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace DTO.ApiObjects
 {
-    public class ApiCategory
+    public class ApiCategory: ApiEntity
     {
         public ApiCategory()
         {
-            Products = new List<ApiEntity>();
+            Products = new List<ApiProduct>();
         }
 
         public int? CatID { get; set; }
         public string CatName { get; set; }
 
-        public List<ApiEntity> Products { get; set; }
+        public List<ApiProduct> Products { get; set; }
     }
 }

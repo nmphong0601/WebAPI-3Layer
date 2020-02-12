@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO.ApiObjects
 {
-    public class ApiRating
+    public class ApiRating: ApiEntity
     {
         public ApiRating()
         {

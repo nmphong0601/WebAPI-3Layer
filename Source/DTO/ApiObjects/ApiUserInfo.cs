@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO.ApiObjects
 {
-    public class ApiUserInfo
+    public class ApiUserInfo: ApiEntity
     {
         public ApiUserInfo()
         {

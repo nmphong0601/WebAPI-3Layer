@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DTO.ApiObjects
 {
-    public class ApiOrderDetail
+    public class ApiOrderDetail: ApiEntity
     {
         public ApiOrderDetail()
         {

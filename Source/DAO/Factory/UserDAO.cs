@@ -15,6 +15,12 @@ namespace DAO.Factory
     {
         private QLBH_WebEntities db = new QLBH_WebEntities();
         private OrderDAO orderFactory = new OrderDAO();
+        private readonly IMapper _mapper;
+
+        public UserDAO()
+        {
+            this._mapper = Mapper.Configuration.CreateMapper();
+        }
 
         public ApiUserInfo Login(string userName, string password, bool? rememberMe)
         {
@@ -25,13 +31,11 @@ namespace DAO.Factory
 
             if (user != null)
             {
-
                 user.f_Password = "";
                 userInfor.Username = userName;
                 userInfor.Permission = Ulti.PermissionMapTo(user.f_Permission);
                 userInfor.RemeberMe = rememberMe;
-                userInfor.FullInfo = Mapper.Map<User, ApiUser>(user);
-
+                userInfor.FullInfo = this._mapper.Map<User, ApiUser>(user);
 
             }
             else
