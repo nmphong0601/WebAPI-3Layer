@@ -15,9 +15,24 @@ namespace DAO.Factory
     {
         private QLBH_WebEntities db = new QLBH_WebEntities();
 
-        public IEnumerable<ApiRating> GetAll()
+        public IEnumerable<ApiRating> GetAll(string filter = null, string sort = "ProId DESC")
         {
-            return Mapper.Map<IEnumerable<Rating>, IEnumerable<ApiRating>>(db.Ratings.ToList());
+            var sqlStr = "Select * from Ratings" + (filter != null ? " where " + filter + " ORDER BY " + sort : " ORDER BY " + sort);
+
+            var ratings = db.Ratings.SqlQuery(sqlStr).ToList();
+
+            var apiRatings = Mapper.Map<IEnumerable<Rating>, IEnumerable<ApiRating>>(ratings);
+
+            return apiRatings;
+        }
+
+        public IEnumerable<ApiRating> Paged(string keyword = null, string filter = null, string sort = "ProId DESC", int page = 1, int pageSize = 6)
+        {
+            var apiRatings = GetAll(filter, sort).Skip((page - 1) * pageSize)
+                 .Take(pageSize)
+                 .ToList();
+
+            return apiRatings;
         }
 
         public IEnumerable<ApiRating> GetByProductId(int? proId)

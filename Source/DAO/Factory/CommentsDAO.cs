@@ -15,9 +15,25 @@ namespace DAO.Factory
     {
         private QLBH_WebEntities db = new QLBH_WebEntities();
 
-        public IEnumerable<ApiComment> GetAll()
+        public IEnumerable<ApiComment> GetAll(string filter = null, string sort = "UserID DESC")
         {
-            return Mapper.Map<IEnumerable<Comment>, IEnumerable<ApiComment>>(db.Comments.ToList());
+            var sqlStr = "Select * from Comments" + (filter != null ? " where " + filter + " ORDER BY " + sort : " ORDER BY " + sort);
+
+            var comments = db.Comments.SqlQuery(sqlStr).ToList();
+
+            var apiComments = Mapper.Map<IEnumerable<Comment>, IEnumerable<ApiComment>>(comments);
+
+            return apiComments;
+        }
+
+        public IEnumerable<ApiComment> Paged(string keyword = null, string filter = null, string sort = "UserID DESC", int page = 1, int pageSize = 6)
+        {
+            var apiComments = GetAll(filter, sort).Where(c => c.Content.Contains(keyword))
+                 .Skip((page - 1) * pageSize)
+                 .Take(pageSize)
+                 .ToList();
+
+            return apiComments;
         }
 
         public IEnumerable<ApiComment> GetByProduct(int? proId)

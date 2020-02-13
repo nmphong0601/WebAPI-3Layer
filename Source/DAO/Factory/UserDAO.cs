@@ -46,10 +46,23 @@ namespace DAO.Factory
             return userInfor;
         }
 
-        public IEnumerable<ApiUser> GetAll()
+        public IEnumerable<ApiUser> GetAll(string filter = null, string sort = "f_ID DESC")
         {
-            var users = db.Users.ToList();
+            var sqlStr = "Select * from Users" + (filter != null ? " where " + filter + " ORDER BY " + sort : " ORDER BY " + sort);
+
+            var users = db.Users.SqlQuery(sqlStr).ToList();
+            
             var apiUsers = Mapper.Map<IEnumerable<User>, IEnumerable<ApiUser>>(users);
+
+            return apiUsers;
+        }
+
+        public IEnumerable<ApiUser> Paged(string keyword = null, string filter = null, string sort = "f_ID DESC", int page = 1, int pageSize = 6)
+        {
+            var apiUsers = GetAll(filter, sort).Where(p => p.f_Name.Contains(keyword))
+                 .Skip((page - 1) * pageSize)
+                 .Take(pageSize)
+                 .ToList();
 
             return apiUsers;
         }

@@ -11,7 +11,9 @@ namespace DAO.IFactory
 {
     public interface ICategoriesDAO
     {
-        IEnumerable<ApiCategory> GetAll();
+        IEnumerable<ApiCategory> GetAll(string filter = null, string sort = "CatID DESC");
+
+        IEnumerable<ApiCategory> Paged(string keyword = null, string filter = null, string sort = "CatId DESC", int page = 1, int pageSize = 6);
 
         ApiCategory GetSingle(int? id);
 

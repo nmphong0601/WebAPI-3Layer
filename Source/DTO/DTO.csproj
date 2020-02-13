@@ -93,7 +93,7 @@
     <Compile Include="ApiObjects\ApiProducer.cs" />
     <Compile Include="ApiObjects\ApiProduct.cs" />
     <Compile Include="ApiObjects\ApiRating.cs" />
-    <Compile Include="ApiObjects\ApiStatues.cs" />
+    <Compile Include="ApiObjects\ApiStatuses.cs" />
     <Compile Include="ApiObjects\ApiUserInfo.cs" />
     <Compile Include="ApiObjects\ApiUser.cs" />
     <Compile Include="Models\Cart.cs" />

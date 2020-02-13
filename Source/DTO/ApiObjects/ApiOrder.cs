@@ -21,6 +21,6 @@ namespace DTO.ApiObjects
 
         public List<ApiOrderDetail> OrderDetails { get; set; }
         public ApiUser User { get; set; }
-        public ApiStatues Status { get; set; }
+        public ApiStatuses Status { get; set; }
     }
 }

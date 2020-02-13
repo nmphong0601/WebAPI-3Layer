@@ -11,7 +11,9 @@ namespace DAO.IFactory
 {
     public interface ICommentsDAO
     {
-        IEnumerable<ApiComment> GetAll();
+        IEnumerable<ApiComment> GetAll(string filter = null, string sort = "UserID DESC");
+
+        IEnumerable<ApiComment> Paged(string keyword = null, string filter = null, string sort = "UserID DESC", int page = 1, int pageSize = 6);
 
         IEnumerable<ApiComment> GetByProduct(int? proId);
 

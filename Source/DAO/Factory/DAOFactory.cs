@@ -100,22 +100,32 @@ namespace DAO.Factory
             CreateMap<ApiUserInfo, UserInfo>().ForMember(dest => dest.FullInfo, conf => conf.MapFrom(src => src.FullInfo));// Map Model property
             CreateMap<UserInfo, ApiUserInfo>().ForMember(dest => dest.FullInfo, conf => conf.MapFrom(src => src.FullInfo));
 
-            CreateMap<ApiStatues, Status>();
-            CreateMap<Status, ApiStatues>();
+            CreateMap<ApiStatuses, Status>();
+            CreateMap<Status, ApiStatuses>();
 
             CreateMap<ApiRating, Rating>().ForMember(dest => dest.Product, conf => conf.MapFrom(src => src.Product));
             CreateMap<Rating, ApiRating>().ForMember(dest => dest.Product, conf => conf.MapFrom(src => src.Product));
 
+            //CreateMap<ApiProduct, Product>().ForMember(dest => dest.OrderDetails, option => option.Ignore())
+            //                                .ForMember(dest => dest.Rating, conf => conf.MapFrom(src => src.Rating))
+            //                                .ForMember(dest => dest.Comment, conf => conf.MapFrom(src => src.Comment))
+            //                                .ForMember(dest => dest.Category, conf => conf.MapFrom(src => src.Category))
+            //                                .ForMember(dest => dest.Producer, conf => conf.MapFrom(src => src.Producer));
+            //CreateMap<Product, ApiProduct>().ForMember(dest => dest.OrderDetails, option => option.Ignore())
+            //                                .ForMember(dest => dest.Rating, conf => conf.MapFrom(src => src.Rating))
+            //                                .ForMember(dest => dest.Comment, conf => conf.MapFrom(src => src.Comment))
+            //                                .ForMember(dest => dest.Category, conf => conf.MapFrom(src => src.Category))
+            //                                .ForMember(dest => dest.Producer, conf => conf.MapFrom(src => src.Producer));
             CreateMap<ApiProduct, Product>().ForMember(dest => dest.OrderDetails, option => option.Ignore())
-                                            .ForMember(dest => dest.Rating, conf => conf.MapFrom(src => src.Rating))
-                                            .ForMember(dest => dest.Comment, conf => conf.MapFrom(src => src.Comment))
-                                            .ForMember(dest => dest.Category, conf => conf.MapFrom(src => src.Category))
-                                            .ForMember(dest => dest.Producer, conf => conf.MapFrom(src => src.Producer));
+                                            .ForMember(dest => dest.Rating, option => option.Ignore())
+                                            .ForMember(dest => dest.Comment, option => option.Ignore())
+                                            .ForMember(dest => dest.Category, option => option.Ignore())
+                                            .ForMember(dest => dest.Producer, option => option.Ignore());
             CreateMap<Product, ApiProduct>().ForMember(dest => dest.OrderDetails, option => option.Ignore())
-                                            .ForMember(dest => dest.Rating, conf => conf.MapFrom(src => src.Rating))
-                                            .ForMember(dest => dest.Comment, conf => conf.MapFrom(src => src.Comment))
-                                            .ForMember(dest => dest.Category, conf => conf.MapFrom(src => src.Category))
-                                            .ForMember(dest => dest.Producer, conf => conf.MapFrom(src => src.Producer));
+                                            .ForMember(dest => dest.Rating, option => option.Ignore())
+                                            .ForMember(dest => dest.Comment, option => option.Ignore())
+                                            .ForMember(dest => dest.Category, option => option.Ignore())
+                                            .ForMember(dest => dest.Producer, option => option.Ignore());
 
             CreateMap<ApiProducer, Producer>().ForMember(dest => dest.Products, option => option.Ignore());
             CreateMap<Producer, ApiProducer>().ForMember(dest => dest.Products, option => option.Ignore());

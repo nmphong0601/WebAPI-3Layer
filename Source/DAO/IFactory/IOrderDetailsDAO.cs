@@ -11,7 +11,9 @@ namespace DAO.IFactory
 {
     public interface IOrderDetailsDAO
     {
-        IEnumerable<ApiOrderDetail> GetAll();
+        IEnumerable<ApiOrderDetail> GetAll(string filter = null, string sort = "OrderId DESC");
+
+        IEnumerable<ApiOrderDetail> Paged(string keyword = null, string filter = null, string sort = "OrderId DESC", int page = 1, int pageSize = 6);
 
         IEnumerable<ApiOrderDetail> GetByOrder(int? orderId);
 

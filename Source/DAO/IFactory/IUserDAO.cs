@@ -13,7 +13,9 @@ namespace DAO.IFactory
     {
         ApiUserInfo Login(string userName, string password, bool? rememberMe);
 
-        IEnumerable<ApiUser> GetAll();
+        IEnumerable<ApiUser> GetAll(string filter = null, string sort = "f_ID DESC");
+
+        IEnumerable<ApiUser> Paged(string keyword = null, string filter = null, string sort = "Id DESC", int page = 1, int pageSize = 6);
 
         ApiUser GetSingle(int? id);
 

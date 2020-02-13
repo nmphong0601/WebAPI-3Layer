@@ -11,7 +11,9 @@ namespace DAO.IFactory
 {
     public interface IProducersDAO
     {
-        IEnumerable<ApiProducer> GetAll();
+        IEnumerable<ApiProducer> GetAll(string filter = null, string sort = "ProducerID DESC");
+
+        IEnumerable<ApiProducer> Paged(string keyword = null, string filter = null, string sort = "ProducerID DESC", int page = 1, int pageSize = 6);
 
         ApiProducer GetSingle(int? id);
 

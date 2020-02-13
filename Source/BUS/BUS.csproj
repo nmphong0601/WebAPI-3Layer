@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CartsBUS.cs" />
     <Compile Include="CategoriesBUS.cs" />
     <Compile Include="CommentsBUS.cs" />
     <Compile Include="OrderBUS.cs" />

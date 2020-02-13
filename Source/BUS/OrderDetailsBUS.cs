@@ -1,5 +1,6 @@
 ﻿using DAO.Factory;
 using DTO.ApiObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,38 +8,52 @@ using System.Threading.Tasks;
 
 namespace BUS
 {
-    class OrderDetailsBUS
+    public class OrderDetailsBUS
     {
-        private OrderDetailsDAO orderDetailFactory = new OrderDetailsDAO();
-
-        public IEnumerable<ApiOrderDetail> GetAll()
+        readonly DAOFactory factory;
+        public OrderDetailsBUS()
         {
-            return orderDetailFactory.GetAll();
+            this.factory = new DAOFactory();
+        }
+
+        public OrderDetailsBUS(DAOFactory factory)
+        {
+            this.factory = factory ?? throw new ArgumentNullException(nameof(DAOFactory));
+        }
+
+        public IEnumerable<ApiOrderDetail> GetAll(string filter = null, string sort = "OrderId DESC")
+        {
+            return factory.OrderDetailsDAO.GetAll(filter, sort);
+        }
+
+        public IEnumerable<ApiOrderDetail> Paged(string keyword = null, string filter = null, string sort = "OrderId DESC", int page = 1, int pageSize = 6)
+        {
+            return factory.OrderDetailsDAO.Paged(keyword, filter, sort, page, pageSize);
         }
 
         public IEnumerable<ApiOrderDetail> GetByOrder(int? orderId)
         {
-            return orderDetailFactory.GetByOrder(orderId);
+            return factory.OrderDetailsDAO.GetByOrder(orderId);
         }
 
         public IEnumerable<ApiOrderDetail> GetByProduct(int? proId)
         {
-            return orderDetailFactory.GetByProduct(proId);
+            return factory.OrderDetailsDAO.GetByProduct(proId);
         }
 
         public ApiOrderDetail Add(ApiOrderDetail orderDetail)
         {
-            return orderDetailFactory.Add(orderDetail);
+            return factory.OrderDetailsDAO.Add(orderDetail);
         }
 
         public ApiOrderDetail Update(ApiOrderDetail orderDetail)
         {
-            return orderDetailFactory.Update(orderDetail);
+            return factory.OrderDetailsDAO.Update(orderDetail);
         }
 
         public int Delete(int? orderId, int? proId)
         {
-            return orderDetailFactory.Delete(orderId, proId);
+            return factory.OrderDetailsDAO.Delete(orderId, proId);
         }
     }
 }

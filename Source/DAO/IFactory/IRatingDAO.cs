@@ -11,7 +11,9 @@ namespace DAO.IFactory
 {
     public interface IRatingDAO
     {
-        IEnumerable<ApiRating> GetAll();
+        IEnumerable<ApiRating> GetAll(string filter = null, string sort = "ProId DESC");
+
+        IEnumerable<ApiRating> Paged(string keyword = null, string filter = null, string sort = "ProId DESC", int page = 1, int pageSize = 6);
 
         IEnumerable<ApiRating> GetByProductId(int? proId);
 

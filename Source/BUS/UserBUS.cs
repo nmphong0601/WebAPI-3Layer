@@ -27,9 +27,14 @@ namespace BUS
             return factory.UserDAO.Login(userName, password, rememberMe);
         }
 
-        public IEnumerable<ApiUser> GetAll()
+        public IEnumerable<ApiUser> GetAll(string filter = null, string sort = "f_ID DESC")
         {
-            return factory.UserDAO.GetAll();
+            return factory.UserDAO.GetAll(filter, sort);
+        }
+
+        public IEnumerable<ApiUser> Paged(string keyword = null, string filter = null, string sort = "Id DESC", int page = 1, int pageSize = 6)
+        {
+            return factory.UserDAO.Paged(keyword, filter, sort, page, pageSize);
         }
 
         public ApiUser GetSingle(int? id)

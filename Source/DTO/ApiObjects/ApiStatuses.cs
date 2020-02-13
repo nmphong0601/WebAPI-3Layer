@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DTO.ApiObjects
 {
-    public class ApiStatues: ApiEntity
+    public class ApiStatuses: ApiEntity
     {
-        public ApiStatues()
+        public ApiStatuses()
         {
             Orders = new List<ApiOrder>();
         }

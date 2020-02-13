@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,33 +8,47 @@ using DTO.ApiObjects;
 
 namespace BUS
 {
-    class ProductsBUS
+    public class ProductsBUS
     {
-        private ProductsDAO productsFactory = new ProductsDAO();
-
-        public IEnumerable<ApiProduct> GetAll()
+        readonly DAOFactory factory;
+        public ProductsBUS()
         {
-            return productsFactory.GetAll();
+            this.factory = new DAOFactory();
+        }
+
+        public ProductsBUS(DAOFactory factory)
+        {
+            this.factory = factory ?? throw new ArgumentNullException(nameof(DAOFactory));
+        }
+
+        public IEnumerable<ApiProduct> GetAll(string filter = null, string sort = "ProID DESC")
+        {
+            return factory.ProductsDAO.GetAll(filter, sort);
+        }
+
+        public IEnumerable<ApiProduct> Paged(string keyword = null, string filter = null, string sort = "Id DESC", int page = 1, int pageSize = 6)
+        {
+            return factory.ProductsDAO.Paged(keyword, filter, sort, page, pageSize);
         }
 
         public ApiProduct GetSingle(int? id)
         {
-            return productsFactory.GetSingle(id);
+            return factory.ProductsDAO.GetSingle(id);
         }
 
         public ApiProduct Add(ApiProduct product)
         {
-            return productsFactory.Add(product);
+            return factory.ProductsDAO.Add(product);
         }
 
         public ApiProduct Update(int? id , ApiProduct product)
         {
-            return productsFactory.Update(id, product);
+            return factory.ProductsDAO.Update(id, product);
         }
 
         public int Delete(int? id)
         {
-            return productsFactory.Delete(id);
+            return factory.ProductsDAO.Delete(id);
         }
     }
 }

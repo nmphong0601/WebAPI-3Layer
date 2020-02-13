@@ -15,9 +15,25 @@ namespace DAO.Factory
     {
         private QLBH_WebEntities db = new QLBH_WebEntities();
 
-        public IEnumerable<ApiCategory> GetAll()
+        public IEnumerable<ApiCategory> GetAll(string filter = null, string sort = "CatID DESC")
         {
-            return Mapper.Map<IEnumerable<Category>, IEnumerable<ApiCategory>>(db.Categories.ToList());
+            var sqlStr = "Select * from Categories" + (filter != null ? " where " + filter + " ORDER BY " + sort : " ORDER BY " + sort);
+
+            var categories = db.Categories.SqlQuery(sqlStr).ToList();
+
+            var apiCategories = Mapper.Map<IEnumerable<Category>, IEnumerable<ApiCategory>>(categories);
+
+            return apiCategories;
+        }
+
+        public IEnumerable<ApiCategory> Paged(string keyword = null, string filter = null, string sort = "CatId DESC", int page = 1, int pageSize = 6)
+        {
+            var apiCategories = GetAll(filter, sort).Where(c => c.CatName.Contains(keyword))
+                 .Skip((page - 1) * pageSize)
+                 .Take(pageSize)
+                 .ToList();
+
+            return apiCategories;
         }
 
         public ApiCategory GetSingle(int? id)

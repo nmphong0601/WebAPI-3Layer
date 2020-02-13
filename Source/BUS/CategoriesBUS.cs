@@ -1,5 +1,6 @@
 ﻿using DAO.Factory;
 using DTO.ApiObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,33 +8,47 @@ using System.Threading.Tasks;
 
 namespace BUS
 {
-    class CategoriesBUS
+    public class CategoriesBUS
     {
-        private CategoriesDAO categoriesFactory = new CategoriesDAO();
-
-        public IEnumerable<ApiCategory> GetAll()
+        readonly DAOFactory factory;
+        public CategoriesBUS()
         {
-            return categoriesFactory.GetAll();
+            this.factory = new DAOFactory();
+        }
+
+        public CategoriesBUS(DAOFactory factory)
+        {
+            this.factory = factory ?? throw new ArgumentNullException(nameof(DAOFactory));
+        }
+
+        public IEnumerable<ApiCategory> GetAll(string filter = null, string sort = "CatID DESC")
+        {
+            return factory.CategoriesDAO.GetAll(filter, sort);
+        }
+
+        public IEnumerable<ApiCategory> Paged(string keyword = null, string filter = null, string sort = "CatId DESC", int page = 1, int pageSize = 6)
+        {
+            return factory.CategoriesDAO.Paged(keyword, filter, sort, page, pageSize);
         }
 
         public ApiCategory GetSingle(int? id)
         {
-            return categoriesFactory.GetSingle(id);
+            return factory.CategoriesDAO.GetSingle(id);
         }
 
         public ApiCategory Add(ApiCategory category)
         {
-            return categoriesFactory.Add(category);
+            return factory.CategoriesDAO.Add(category);
         }
 
         public ApiCategory Update(int? id , ApiCategory category)
         {
-            return categoriesFactory.Update(id, category);
+            return factory.CategoriesDAO.Update(id, category);
         }
 
         public int Delete(int? id)
         {
-            return categoriesFactory.Delete(id);
+            return factory.CategoriesDAO.Delete(id);
         }
     }
 }

@@ -12,13 +12,15 @@ namespace DAO.IFactory
     public interface IStatuesDAO
     {
 
-        IEnumerable<ApiStatues> GetAll();
+        IEnumerable<ApiStatuses> GetAll(string filter = null, string sort = "SttID DESC");
 
-        ApiStatues GetSingle(int? id);
+        IEnumerable<ApiStatuses> Paged(string keyword = null, string filter = null, string sort = "SttID DESC", int page = 1, int pageSize = 6);
 
-        ApiStatues Add(ApiStatues status);
+        ApiStatuses GetSingle(int? id);
 
-        ApiStatues Update(int? id, ApiStatues status);
+        ApiStatuses Add(ApiStatuses status);
+
+        ApiStatuses Update(int? id, ApiStatuses status);
 
         int Delete(int? id);
     }
