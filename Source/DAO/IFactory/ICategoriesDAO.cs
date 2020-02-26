@@ -21,6 +21,6 @@ namespace DAO.IFactory
 
         ApiCategory Update(int? id, ApiCategory category);
 
-        int Delete(int? id);
+        Boolean Delete(int? id);
     }
 }

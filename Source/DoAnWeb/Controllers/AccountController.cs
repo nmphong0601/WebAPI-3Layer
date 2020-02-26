@@ -7,6 +7,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using DoAnWeb.Caching;
+using DoAnWeb.ClientModels;
 
 namespace DoAnWeb.Controllers
 {
@@ -23,21 +25,20 @@ namespace DoAnWeb.Controllers
 
         //post: Account/Login
         [HttpPost]
-        public ActionResult Login(UserInfo ui)
+        public ActionResult Login(ClientUserInfo ui)
         {
             var pass = Ulti.Md5Hash(ui.Password);
             using (var dc = new QLBH_WebEntities())
             {
-                var test = dc.Users.ToList();
-                var user = dc.Users.Where(u => u.f_Username == ui.Username
-                    && u.f_Password == pass).FirstOrDefault();
-            
-                 if (user != null){
-                    if(user.f_Permission == 0)
+
+                var user = CSDLQLBH.Login(ui);
+
+                if (user != null){
+                    if(user.Permission == "Customer")
                     {
                         Session["Logged"] = ui;
                         Session["Updated"] = null;
-                        Response.Cookies["UserId"].Value = user.f_ID.ToString();
+                        Response.Cookies["UserId"].Value = user.FullInfo.f_ID.ToString();
                         Response.Cookies["UserId"].Expires = DateTime.Now.AddDays(7);
 
                         return RedirectToAction("Index", "Home");
@@ -45,11 +46,11 @@ namespace DoAnWeb.Controllers
                     else
                     {
                         //them chuc nang admin
-                        ui.Permission = user.f_Permission;
+                        ui.Permission = user.Permission;
                         //cookie
                         Session["Logged"] = ui;
                         Session["Updated"] = null;
-                        Response.Cookies["UserId"].Value = user.f_ID.ToString();
+                        Response.Cookies["UserId"].Value = user.FullInfo.f_ID.ToString();
                         Response.Cookies["UserId"].Expires = DateTime.Now.AddDays(7);
 
                         return RedirectToAction("Index", "ManageProduct");// trả về trang Index nếu đã nhập đúng thông tin
@@ -105,7 +106,7 @@ namespace DoAnWeb.Controllers
             else
             {
                 // TODO: Captcha validation passed, proceed with protected action
-                var u = new User
+                var u = new ClientUser
                 {
                     f_Username = user.Username,
                     f_Password = Ulti.Md5Hash(user.Password),
@@ -113,11 +114,9 @@ namespace DoAnWeb.Controllers
                     f_Email = user.Email,
                     f_DOB = DateTime.ParseExact(user.DOB, "d/m/yyyy", null)
                 };
-                using (var dc = new QLBH_WebEntities())
-                {
-                    dc.Users.Add(u);
-                    dc.SaveChanges();
-                }
+
+                CSDLQLBH.InsertUser(u);
+
                 Session["Registered"] = 1;
                 return RedirectToAction("Login", "Account");
             }      
@@ -131,28 +130,26 @@ namespace DoAnWeb.Controllers
             //{
             //    return RedirectToAction("Login", "Account");
             //}
-            var ui = Session["Logged"] as UserInfo;
+            var ui = Session["Logged"] as ClientUserInfo;
             return View(ui);
         }
 
         public ActionResult UpdateProfile()
         {
-            var ui = Session["Logged"] as UserInfo;
-            using (var qlbh = new QLBH_WebEntities())
-            {
-                var u = new User();
-                u = qlbh.Users.Where(uo => uo.f_Username == ui.Username).FirstOrDefault();
-                ui.FullInfo = u;
-                return View(ui);
-            }
+            var ui = Session["Logged"] as ClientUserInfo;
 
+            var u = new ClientUser();
+            u = CSDLQLBH.UserGetSingleByUserName(ui.Username);
+            ui.FullInfo = u;
+
+            return View(ui);
         }
 
         [HttpPost]
         [AllowAnonymous]
         [CaptchaValidation("CaptchaCode", "ExampleCaptcha", "Incorrect CAPTCHA code!")]
 
-        public ActionResult UpdateProfile(UserInfo ui)
+        public ActionResult UpdateProfile(ClientUserInfo ui)
         {
             if (!ModelState.IsValid)
             {
@@ -161,18 +158,11 @@ namespace DoAnWeb.Controllers
             }
             else
             {
-                User u = ui.FullInfo;
+                ClientUser u = ui.FullInfo;
                 u.f_Password = Ulti.Md5Hash(ui.Password);
-                using (var qlbh = new QLBH_WebEntities())
-                {
-                    var oldUser = qlbh.Users.Where(ou => ou.f_Username == ui.Username).FirstOrDefault();
-                    oldUser.f_Name = u.f_Name;
-                    oldUser.f_Password = u.f_Password;
-                    oldUser.f_Email = u.f_Email;
-                    oldUser.f_DOB = u.f_DOB;
-                    qlbh.Entry(oldUser).State = EntityState.Modified;
-                    qlbh.SaveChanges();
-                }
+
+                CSDLQLBH.UpdateUser(u.f_ID, u);
+
                 Session["Updated"] = 1;
                 Session["Logged"] = null;
                 Session["cart"] = null;

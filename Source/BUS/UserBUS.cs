@@ -42,6 +42,11 @@ namespace BUS
             return factory.UserDAO.GetSingle(id);
         }
 
+        public ApiUser GetSingleByUserName(string userName = null)
+        {
+            return factory.UserDAO.GetSingleByUserName(userName);
+        }
+
         public ApiUser Add(ApiUser user)
         {
             return factory.UserDAO.Add(user);
@@ -52,7 +57,7 @@ namespace BUS
             return factory.UserDAO.Update(id, user);
         }
 
-        public int Delete(int? id)
+        public Boolean Delete(int? id)
         {
             return factory.UserDAO.Delete(id);
         }

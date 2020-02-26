@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DoAnWeb.Caching;
+using DoAnWeb.ClientModels;
 using DoAnWeb.Models;
 using DoAnWeb.Ultilities;
 
@@ -13,11 +15,8 @@ namespace DoAnWeb.Controllers
         // GET: ManagerCat
         public ActionResult Index()
         {
-            using (var dc = new QLBH_WebEntities())
-            {
-                var l = dc.Categories.ToList();
-                return View(l);
-            }
+            var l = CSDLQLBH.GetCategories().ToList();
+            return View(l);
         }
 
         // GET: ManagerCat/Add
@@ -33,58 +32,34 @@ namespace DoAnWeb.Controllers
 
         // Post: ManagerCat/Add
         [HttpPost]
-        public ActionResult Add(Category c)
+        public ActionResult Add(ClientCategory c)
         {
             //lưu thông tin
-            using (var dc = new QLBH_WebEntities())
-            {
-                dc.Categories.Add(c);
-                dc.SaveChanges();
-            }
+            CSDLQLBH.InsertCategory(c);
             return RedirectToAction("Index");
         }
 
         // GET: ManagerCat/Delete
         public ActionResult Delete(int id)
         {
-            using (var dc = new QLBH_WebEntities())
-            {
-                var cat = dc.Categories.Where(c => c.CatID == id).FirstOrDefault();
-                if (cat != null)
-                {
-                    dc.Categories.Remove(cat);
-                    var listProduct = dc.Products.Where(p => p.CatID == id);
-                    foreach (Product p in listProduct)
-                    {
-                        dc.Products.Remove(p);
-                        Ulti.DeleteProductImgs(p.ProID, Server.MapPath("~"));
-                    }
-                    dc.SaveChanges();
-                }
-                return RedirectToAction("Index");
-            }
+            CSDLQLBH.RemoveCategory(id);
+            return RedirectToAction("Index");
         }
 
         // GET: ManagerCat/Update
         public ActionResult Update(int id)
         {
-            using (var qlbh = new QLBH_WebEntities())
-            {
-                var cat = qlbh.Categories.Where(c => c.CatID == id).FirstOrDefault();
-                return View(cat);
-            }
+            var cat = CSDLQLBH.GetSingleCategory(id);
+            return View(cat);
         }
 
         [HttpPost]
         public ActionResult Update(Category category)
         {
-            using (var qlbh = new QLBH_WebEntities())
-            {
-                var cat = qlbh.Categories.Where(c => c.CatID == category.CatID).FirstOrDefault();
-                cat.CatName = category.CatName;
-                qlbh.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            var cat = CSDLQLBH.GetSingleCategory(category.CatID);
+            cat.CatName = category.CatName;
+            CSDLQLBH.UpdateCategory(cat);
+            return RedirectToAction("Index");
         }
 
 

@@ -22,6 +22,6 @@ namespace DAO.IFactory
 
         ApiStatuses Update(int? id, ApiStatuses status);
 
-        int Delete(int? id);
+        Boolean Delete(int? id);
     }
 }

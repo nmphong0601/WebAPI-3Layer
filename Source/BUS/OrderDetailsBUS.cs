@@ -51,7 +51,7 @@ namespace BUS
             return factory.OrderDetailsDAO.Update(orderDetail);
         }
 
-        public int Delete(int? orderId, int? proId)
+        public Boolean Delete(int? orderId, int? proId)
         {
             return factory.OrderDetailsDAO.Delete(orderId, proId);
         }

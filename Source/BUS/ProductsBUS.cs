@@ -46,7 +46,7 @@ namespace BUS
             return factory.ProductsDAO.Update(id, product);
         }
 
-        public int Delete(int? id)
+        public Boolean Delete(int? id)
         {
             return factory.ProductsDAO.Delete(id);
         }

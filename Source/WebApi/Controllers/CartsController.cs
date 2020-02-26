@@ -46,11 +46,65 @@ namespace WebApi.Controllers
 
         //POST: Insert
         [HttpPost]
-        public ApiCart Post([FromBody]ApiCart apiCart, int productId, int quantity = 1)
+        public ApiCart Post([FromBody]ApiCart apiCart)
+        {
+            try
+            {
+                
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return apiCart;
+        }
+
+        //PUST: Update
+        [HttpPut]
+        public ApiCart Put(int? id, [FromBody]ApiCart apiCart)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return apiCart;
+        }
+
+        //DELETE
+        [HttpPut]
+        public ApiCart Delete(int productId)
+        {
+            return new ApiCart();
+        }
+
+        //POST: Insert item
+        [HttpPost]
+        [Route("api/Carts/Add/Item")]
+        public ApiCart AddItem([FromBody]ApiCart apiCart, int productId, int quantity = 1)
         {
             try
             {
                 apiCart = service.AddItem(apiCart, productId, quantity);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return apiCart;
+        }
+
+        //PUST: Update Item
+        [HttpPut]
+        [Route("api/Carts/Update/Item")]
+        public ApiCart Put(int? id, [FromBody]ApiCart apiCart, int productId, int quantity = 1)
+        {
+            try
+            {
+                apiCart = service.Update(apiCart, productId, quantity);
             }
             catch (Exception ex)
             {
@@ -75,24 +129,10 @@ namespace WebApi.Controllers
             return apiCart;
         }
 
-        //PUST: Update
+        //DELETE Item
         [HttpPut]
-        public ApiCart Put(int? id, [FromBody]ApiCart apiCart, int productId, int quality)
-        {
-            try
-            {
-                apiCart = service.Update(apiCart, productId, quality);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            return apiCart;
-        }
-
-        //DELETE
-        [HttpPut]
-        public ApiCart Delete(ApiCart cart, int productId)
+        [Route("api/Carts/Delete/Item")]
+        public ApiCart Delete([FromBody]ApiCart cart, int productId)
         {
             return service.Remove(cart, productId);
         }

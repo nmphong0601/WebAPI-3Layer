@@ -67,16 +67,20 @@ namespace DAO.Factory
             return Mapper.Map<OrderDetail, ApiOrderDetail>(orderDetailInDB);
         }
 
-        public int Delete(int? orderId, int? proId)
+        public Boolean Delete(int? orderId, int? proId)
         {
+            var isDelete = false;
+
             var orderDetailInDB = db.OrderDetails.Where(o => o.OrderID == orderId && o.ProID == proId).FirstOrDefault();
             if (orderDetailInDB != null)
             {
-                db.OrderDetails.Remove(orderDetailInDB);
+                isDelete = db.OrderDetails.Remove(orderDetailInDB) != null ? true : false;
                 db.Entry(orderDetailInDB).State = System.Data.EntityState.Deleted;
+
+                db.SaveChanges();
             }
 
-            return db.SaveChanges();
+            return isDelete;
         }
     }
 }

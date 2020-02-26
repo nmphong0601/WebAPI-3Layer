@@ -51,7 +51,7 @@ namespace BUS
             return factory.CommentsDAO.Update(comment);
         }
 
-        public int Delete(int? userId, int? proId)
+        public Boolean Delete(int? userId, int? proId)
         {
             return factory.CommentsDAO.Delete(userId, proId);
         }

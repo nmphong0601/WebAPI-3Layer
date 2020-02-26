@@ -96,10 +96,11 @@ namespace WebApi.Controllers
 
         //PUST: Update
         [HttpPut]
-        public ApiCategory Put(int? id, [FromBody]ApiCategory apiCategorie)
+        public ApiCategory Put([FromBody]ApiCategory apiCategorie)
         {
             try
             {
+                int? id = apiCategorie.CatID;
                 apiCategorie = service.Update(id, apiCategorie);
             }
             catch (Exception ex)

@@ -67,16 +67,20 @@ namespace DAO.Factory
             return apiComment;
         }
 
-        public int Delete(int? userId, int? proId)
+        public Boolean Delete(int? userId, int? proId)
         {
+            var isDelete = false;
+
             var commentInDB = db.Comments.Where(c => c.UserID == userId && c.ProID == proId).FirstOrDefault();
             if (commentInDB != null)
             {
-                db.Comments.Remove(commentInDB);
+                isDelete = db.Comments.Remove(commentInDB) != null ? true : false;
                 db.Entry(commentInDB).State = System.Data.EntityState.Deleted;
+
+                db.SaveChanges();
             }
 
-            return db.SaveChanges();
+            return isDelete;
         }
     }
 }

@@ -63,18 +63,22 @@ namespace DAO.Factory
             return apiStatus;
         }
 
-        public int Delete(int? id)
+        public Boolean Delete(int? id)
         {
+            var isDelete = false;
+
             using (var dc = new QLBH_WebEntities())
             {
                 var apiStatusInDB = db.Statuses.Where(s => s.SttID == id).FirstOrDefault();
                 if (apiStatusInDB != null)
                 {
-                    db.Statuses.Remove(apiStatusInDB);
-                    db.Entry(apiStatusInDB).State = System.Data.EntityState.Deleted; 
+                    isDelete = db.Statuses.Remove(apiStatusInDB) != null ? true : false;
+                    db.Entry(apiStatusInDB).State = System.Data.EntityState.Deleted;
+
+                    db.SaveChanges();
                 }
 
-                return dc.SaveChanges();
+                return isDelete;
             }
         }
     }

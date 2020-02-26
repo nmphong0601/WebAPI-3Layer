@@ -32,10 +32,6 @@ namespace WebApi.Controllers
             {
                 Dictionary<string, object> result = new Dictionary<string, object>();
 
-                result["Logged"] = ui;
-                result["Updated"] = null;
-                result["userInfor"] = userInfor;
-
                 return userInfor;
             }
 

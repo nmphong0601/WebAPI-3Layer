@@ -74,6 +74,13 @@ namespace DAO.Factory
             return apiUser;
         }
 
+        public ApiUser GetSingleByUserName(string userName = null)
+        {
+            var user = db.Users.Where(u => u.f_Username == userName).FirstOrDefault();
+            var apiUser = Mapper.Map<User, ApiUser>(user);
+            return apiUser;
+        }
+
         public ApiUser Add(ApiUser apiUser)
         {
             var user = Mapper.Map<ApiUser, User>(apiUser);
@@ -97,8 +104,10 @@ namespace DAO.Factory
             return apiUser;
         }
 
-        public int Delete(int? id)
+        public Boolean Delete(int? id)
         {
+            Boolean isDelete = false;
+
             var userInDB = db.Users.Where(u => u.f_ID == id).FirstOrDefault();
             if (userInDB != null)
             {
@@ -121,11 +130,13 @@ namespace DAO.Factory
                     }
                 }
 
-                db.Users.Remove(userInDB);
+                isDelete = db.Users.Remove(userInDB) != null ? true : false;
                 db.Entry(userInDB).State = System.Data.EntityState.Deleted;
+
+                db.SaveChanges();
             }
 
-            return db.SaveChanges();
+            return isDelete;
         }
     }
 }

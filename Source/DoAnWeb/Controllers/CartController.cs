@@ -1,4 +1,6 @@
-﻿using DoAnWeb.Models;
+﻿using DoAnWeb.Caching;
+using DoAnWeb.ClientModels;
+using DoAnWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -23,11 +25,11 @@ namespace DoAnWeb.Controllers
         {
            
             if(Session["cart"]==null){
-                Session["cart"] = new Cart();
+                Session["cart"] = new ClientCart();
             }
-            var c = Session["cart"] as Cart;
+            var c = Session["cart"] as ClientCart;
      
-            c.AddItem(proId, quantity);
+            c = CSDLQLBH.InsertCartItem(c, proId, quantity);
             return RedirectToAction("Detail", "Product", new { id=proId});
         }
 
@@ -39,11 +41,11 @@ namespace DoAnWeb.Controllers
 
             if (Session["cart"] == null)
             {
-                Session["cart"] = new Cart();
+                Session["cart"] = new ClientCart();
             }
-            var c = Session["cart"] as Cart;
+            var c = Session["cart"] as ClientCart;
 
-            c.AddItem(proId);
+            c = CSDLQLBH.InsertCartItem(c, proId);
             return RedirectToAction("GetListByCategory", "Product", new { id = catId ,page=page});
         }
 
@@ -54,11 +56,11 @@ namespace DoAnWeb.Controllers
 
             if (Session["cart"] == null)
             {
-                Session["cart"] = new Cart();
+                Session["cart"] = new ClientCart();
             }
-            var c = Session["cart"] as Cart;
+            var c = Session["cart"] as ClientCart;
 
-            c.AddItem(proId);
+            c = CSDLQLBH.InsertCartItem(c, proId);
             return RedirectToAction("Index", "Home");
         }
 
@@ -68,8 +70,8 @@ namespace DoAnWeb.Controllers
         public ActionResult Remove(int proId)
         {
        
-            var c = Session["cart"] as Cart;
-            c.Remove(proId);
+            var c = Session["cart"] as ClientCart;
+            c = CSDLQLBH.RemoveCartItem(c, proId);
             return RedirectToAction("Detail", "Cart");
         }
 
@@ -78,8 +80,8 @@ namespace DoAnWeb.Controllers
         //bấm nút cập nhật trong trang thanh toán
         public ActionResult Update(int proId,int quantity)
         {
-            var c = Session["cart"] as Cart;
-            c.Update(proId,quantity);
+            var c = Session["cart"] as ClientCart;
+            c = CSDLQLBH.UpdateCartItem(c, proId, quantity);
             return RedirectToAction("Detail", "Cart");
         }
 
@@ -88,42 +90,43 @@ namespace DoAnWeb.Controllers
         //bấm nút thanh toán, nó sẽ lưu vào csdl và giỏ hàng sẽ trở về số 0
         public ActionResult Checkout( decimal totalPrice)
         {
-            var c = Session["cart"] as Cart;
-            var ui = Session["Logged"] as UserInfo;
+            var c = Session["cart"] as ClientCart;
+            var ui = Session["Logged"] as ClientUserInfo;
 
-            using (var dc = new QLBH_WebEntities())
+            var user = CSDLQLBH.UserGetSingleByUserName(ui.Username);
+            var order = new ClientOrder
             {
-                var user = dc.Users.Where(u => u.f_Username == ui.Username).FirstOrDefault();
-                var order = new Order
-                {
-                    OrderDate = DateTime.Now,
-                    User = user,
-                    Total = totalPrice,
-                };
-                if(dc.Orders.Count() == 0)
-                {
-                    order.OrderID = 1;
-                }
-                dc.Orders.Add(order);
-                decimal amount = 0;
-                foreach(var ci in c.Items){
-                    var p = dc.Products.Where(i=>i.ProID==ci.Product.ProID).FirstOrDefault();
-                    amount=(decimal)p.Price*ci.Quantity;
-                    var od = new OrderDetail { 
-                        Order=order,
-                        Product=p,
-                        Quantity=ci.Quantity,
-                        Price=(decimal)p.Price,
-                        Amount=amount
-                    };
-                    dc.OrderDetails.Add(od);
-                    p.Quantity -= ci.Quantity;
-                    dc.Entry(p).State = EntityState.Modified;
-                    dc.SaveChanges();
-                }
-                dc.SaveChanges();
+                OrderDate = DateTime.Now,
+                User = user,
+                Total = totalPrice,
+            };
+
+            var totalOrders = CSDLQLBH.GetOrders().ToList().Count;
+            if (totalOrders == 0)
+            {
+                order.OrderID = 1;
             }
-            c.Checkout();
+            CSDLQLBH.InsertOrders(order);
+
+            decimal amount = 0;
+            foreach (var ci in c.Items)
+            {
+                var p = CSDLQLBH.GetSingleProduct(ci.Product.ProID);
+                amount = (decimal)p.Price * ci.Quantity;
+                var od = new ClientOrderDetail
+                {
+                    Order = order,
+                    Product = p,
+                    Quantity = ci.Quantity,
+                    Price = (decimal)p.Price,
+                    Amount = amount
+                };
+                CSDLQLBH.InsertOrderDetail(od);
+                p.Quantity -= ci.Quantity;
+                CSDLQLBH.UpdateProduct(p);
+            }
+
+            c = CSDLQLBH.Checkout(c);
             Session["CheckOut"] = 1;
             return RedirectToAction("Detail", "Cart");
         }

@@ -21,6 +21,6 @@ namespace DAO.IFactory
 
         ApiRating Update(ApiRating rating);
 
-        int Delete(int? proId);
+        Boolean Delete(int? proId);
     }
 }

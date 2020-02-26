@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DoAnWeb.Caching;
+using DoAnWeb.ClientModels;
 using DoAnWeb.Models;
 using DoAnWeb.Ultilities;
 
@@ -20,12 +22,9 @@ namespace DoAnWeb.Controllers
         // GET: ManageProduct
         public ActionResult Index()
         {
-            using (var dc = new QLBH_WebEntities())
-            {
-                var l = dc.Products.ToList();
-                return View(l);
-            }
-          
+            var l = CSDLQLBH.GetProducts().ToList();
+            return View(l);
+
         }
 
         // GET: ManageProduct/Delete
@@ -33,11 +32,9 @@ namespace DoAnWeb.Controllers
         {
             using (var dc = new QLBH_WebEntities())
             {
-                var pD = dc.Products.Where(p => p.ProID == id).FirstOrDefault();
+                var pD = CSDLQLBH.GetSingleProduct(id);
                 if(pD!=null){
-                    dc.Products.Remove(pD);
-                    dc.SaveChanges();
-
+                    CSDLQLBH.RemoveProduct(id);
                 }
                 Ulti.DeleteProductImgs(id, Server.MapPath("~"));
                 return RedirectToAction("Index");
@@ -60,7 +57,7 @@ namespace DoAnWeb.Controllers
 
         // Post: ManageProduct/Add
         [HttpPost]
-        public ActionResult Add(Product p, HttpPostedFile imgLg, HttpPostedFile imgSm)
+        public ActionResult Add(ClientProduct p, HttpPostedFile imgLg, HttpPostedFile imgSm)
         {
             //khi hai ô này rỗng
             if (p.TinyDes == null)
@@ -69,17 +66,13 @@ namespace DoAnWeb.Controllers
             }
 
             if(p.FullDesRaw ==null){
-                p.FullDesRaw= string.Empty;
+                p.FullDesRaw = string.Empty;
             }
             p.FullDes = p.FullDesRaw;
             p.View = 0;
             //lưu thông tin
-            using (var dc = new QLBH_WebEntities())
-            {
-                dc.Products.Add(p);
-                dc.SaveChanges();
-            }
-            Ulti.SaveProductImgs(p.ProID,Server.MapPath("~"),imgLg,imgSm);
+            p = CSDLQLBH.InsertProduct(p);
+            Ulti.SaveProductImgs((int)p.ProID,Server.MapPath("~"),imgLg,imgSm);
             return RedirectToAction("Index");
         }
     }

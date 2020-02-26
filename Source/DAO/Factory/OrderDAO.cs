@@ -63,8 +63,10 @@ namespace DAO.Factory
             return apiOrder;
         }
 
-        public int Delete(int? id)
+        public Boolean Delete(int? id)
         {
+            var isDelete = false;
+
             var orderInDB = db.Orders.Where(o => o.OrderID == id).FirstOrDefault();
             if (orderInDB != null)
             {
@@ -78,11 +80,13 @@ namespace DAO.Factory
                     }
                 }
 
-                db.Orders.Remove(orderInDB);
+                isDelete = db.Orders.Remove(orderInDB) != null ? true: false;
                 db.Entry(orderInDB).State = System.Data.EntityState.Deleted;
+
+                db.SaveChanges();
             }
 
-            return db.SaveChanges();
+            return isDelete;
         }
     }
 }

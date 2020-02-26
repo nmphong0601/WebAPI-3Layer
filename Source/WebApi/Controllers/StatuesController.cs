@@ -8,7 +8,7 @@ using System.Web.Http;
 
 namespace WebApi.Controllers
 {
-    public class StatuesController : BaseApiController
+    public class StatusesController : BaseApiController
     {
         private StatuesBUS service = new StatuesBUS();
         //[AuthActionFilter]
@@ -96,10 +96,11 @@ namespace WebApi.Controllers
 
         //PUST: Update
         [HttpPut]
-        public ApiStatuses Put(int? id, [FromBody]ApiStatuses apiStatues)
+        public ApiStatuses Put([FromBody]ApiStatuses apiStatues)
         {
             try
             {
+                int? id = apiStatues.SttID;
                 apiStatues = service.Update(id, apiStatues);
             }
             catch (Exception ex)

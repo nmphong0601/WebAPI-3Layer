@@ -63,8 +63,10 @@ namespace DAO.Factory
             return apiCategory;
         }
 
-        public int Delete(int? id)
+        public Boolean Delete(int? id)
         {
+            var isDelete = false;
+
             var categoryInDB = db.Categories.Where(c => c.CatID == id).FirstOrDefault();
             if (categoryInDB != null)
             {
@@ -78,11 +80,13 @@ namespace DAO.Factory
                     }
                 }
 
-                db.Categories.Remove(categoryInDB);
+                isDelete = db.Categories.Remove(categoryInDB) != null ? true : false;
                 db.Entry(categoryInDB).State = System.Data.EntityState.Deleted;
+
+                db.SaveChanges();
             }
 
-            return db.SaveChanges();
+            return isDelete;
         }
     }
 }

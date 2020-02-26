@@ -23,6 +23,6 @@ namespace DAO.IFactory
 
         ApiComment Update(ApiComment comment);
 
-        int Delete(int? userId, int? proId);
+        Boolean Delete(int? userId, int? proId);
     }
 }

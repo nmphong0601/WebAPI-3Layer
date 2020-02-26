@@ -63,8 +63,10 @@ namespace DAO.Factory
             return apiProduct;
         }
 
-        public int Delete(int? id)
+        public Boolean Delete(int? id)
         {
+            var isDelete = false;
+
             var productInDB = db.Products.Where(p => p.ProID == id).FirstOrDefault();
             if (productInDB != null)
             {
@@ -88,11 +90,13 @@ namespace DAO.Factory
                     }
                 }
 
-                db.Products.Remove(productInDB);
+                isDelete = db.Products.Remove(productInDB) != null ? true : false;
                 db.Entry(productInDB).State = System.Data.EntityState.Deleted;
+
+                db.SaveChanges();
             }
 
-            return db.SaveChanges();
+            return isDelete;
         }
     }
 }

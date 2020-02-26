@@ -1,4 +1,5 @@
-﻿using DoAnWeb.Models;
+﻿using DoAnWeb.Caching;
+using DoAnWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace DoAnWeb.Controllers
         {
             using (var dc = new QLBH_WebEntities())
             {
-                var l = dc.Products.ToList();
+                var l = CSDLQLBH.GetProducts().ToList();
                 return View(l);
             }           
         }

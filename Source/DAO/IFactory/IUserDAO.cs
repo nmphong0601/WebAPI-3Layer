@@ -19,10 +19,12 @@ namespace DAO.IFactory
 
         ApiUser GetSingle(int? id);
 
+        ApiUser GetSingleByUserName(string userName = null);
+
         ApiUser Add(ApiUser user);
 
         ApiUser Update(int? id, ApiUser user);
 
-        int Delete(int? id);
+        Boolean Delete(int? id);
     }
 }

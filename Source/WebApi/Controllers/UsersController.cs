@@ -79,6 +79,23 @@ namespace WebApi.Controllers
             return apiUser;
         }
 
+        //GET: Gingle
+        [HttpGet]
+        [Route("api/Users/GetByUserName")]
+        public ApiUser GetSingleByUserName(string userName = null)
+        {
+            ApiUser apiUser = new ApiUser();
+            try
+            {
+                apiUser = service.GetSingleByUserName(userName);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return apiUser;
+        }
+
         //POST: Insert
         [HttpPost]
         public ApiUser Post([FromBody]ApiUser apiUser)
@@ -96,10 +113,11 @@ namespace WebApi.Controllers
 
         //PUST: Update
         [HttpPut]
-        public ApiUser Put(int? id, [FromBody]ApiUser apiUser)
+        public ApiUser Put([FromBody]ApiUser apiUser)
         {
             try
             {
+                int? id = apiUser.f_ID;
                 apiUser = service.Update(id, apiUser);
             }
             catch (Exception ex)

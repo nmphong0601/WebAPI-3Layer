@@ -23,6 +23,6 @@ namespace DAO.IFactory
 
         ApiOrderDetail Update(ApiOrderDetail orderDetail);
 
-        int Delete(int? orderId, int? proId);
+        Boolean Delete(int? orderId, int? proId);
     }
 }

@@ -96,10 +96,11 @@ namespace WebApi.Controllers
 
         //PUST: Update
         [HttpPut]
-        public ApiProducer Put(int? id, [FromBody]ApiProducer apiProducer)
+        public ApiProducer Put([FromBody]ApiProducer apiProducer)
         {
             try
             {
+                int? id = apiProducer.ProducerID;
                 apiProducer = service.Update(id, apiProducer);
             }
             catch (Exception ex)

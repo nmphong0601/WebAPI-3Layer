@@ -61,16 +61,20 @@ namespace DAO.Factory
             return apiRating;
         }
 
-        public int Delete(int? proId)
+        public Boolean Delete(int? proId)
         {
+            var isDelete = false; 
+
             var ratingInDB = db.Ratings.Where(r => r.ProID == proId).FirstOrDefault();
             if (ratingInDB != null)
             {
-                db.Ratings.Remove(ratingInDB);
+                isDelete = db.Ratings.Remove(ratingInDB) != null ? true : false;
                 db.Entry(ratingInDB).State = System.Data.EntityState.Deleted;
+
+                db.SaveChanges();
             }
 
-            return db.SaveChanges();
+            return isDelete;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using DoAnWeb.Models;
+﻿using DoAnWeb.Caching;
+using DoAnWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,28 +13,19 @@ namespace DoAnWeb.Controllers
         // GET: Category
         public ActionResult GetList()
         {
-            using (var dc = new QLBH_WebEntities())
-            {
-                var l = dc.Categories.ToList();
-                return PartialView("_PartialList",l);
-            }
-          
+            var l = CSDLQLBH.GetCategories().ToList();
+            return PartialView("_PartialList", l);
+
         }
         public ActionResult GetListSX()
         {
-            using (var dc = new QLBH_WebEntities())
-            {
-                var l = dc.Producers.ToList();
-                return PartialView("_PartialListSX", l);
-            }
+            var l = CSDLQLBH.GetProducers().ToList();
+            return PartialView("_PartialListSX", l);
         }
         public ActionResult GetListCategories()
         {
-            using (var qlbh = new QLBH_WebEntities())
-            {
-                var l1 = qlbh.Categories.ToList();
-                return PartialView("_PartialListCategories", l1);
-            }
+            var l1 = CSDLQLBH.GetCategories().ToList();
+            return PartialView("_PartialListCategories", l1);
         }
     }
 }

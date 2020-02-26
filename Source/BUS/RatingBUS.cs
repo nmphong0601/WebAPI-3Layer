@@ -46,7 +46,7 @@ namespace BUS
             return factory.RatingDAO.Update(rating);
         }
 
-        public int Delete(int? proId)
+        public Boolean Delete(int? proId)
         {
             return factory.RatingDAO.Delete(proId);
         }

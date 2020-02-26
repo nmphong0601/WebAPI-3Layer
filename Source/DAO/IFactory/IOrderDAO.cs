@@ -21,6 +21,6 @@ namespace DAO.IFactory
 
         ApiOrder Update(int? id, ApiOrder order);
 
-        int Delete(int? id);
+        Boolean Delete(int? id);
     }
 }

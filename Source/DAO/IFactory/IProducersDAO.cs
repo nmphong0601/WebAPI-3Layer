@@ -21,6 +21,6 @@ namespace DAO.IFactory
 
         ApiProducer Update(int? id, ApiProducer producer);
 
-        int Delete(int? id);
+        Boolean Delete(int? id);
     }
 }

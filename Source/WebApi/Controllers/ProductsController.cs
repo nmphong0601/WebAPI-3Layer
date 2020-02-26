@@ -95,10 +95,11 @@ namespace WebApi.Controllers
 
         //PUST: Update
         [HttpPut]
-        public ApiProduct Put(int? id, [FromBody]ApiProduct apiProduct)
+        public ApiProduct Put([FromBody]ApiProduct apiProduct)
         {
             try
             {
+                int? id = apiProduct.ProID;
                 apiProduct = service.Update(id, apiProduct);
             }
             catch (Exception ex)

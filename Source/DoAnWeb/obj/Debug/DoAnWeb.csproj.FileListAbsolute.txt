@@ -421,3 +421,7 @@ D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\DoAnWeb2\DoAnWeb_Search_F
 D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\DoAnWeb2\DoAnWeb_Search_Final\DoAnWeb\Source\DoAnWeb\bin\System.Web.Helpers.xml
 D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\DoAnWeb2\DoAnWeb_Search_Final\DoAnWeb\Source\DoAnWeb\bin\System.Web.Mvc.xml
 D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\DoAnWeb2\DoAnWeb_Search_Final\DoAnWeb\Source\DoAnWeb\obj\Debug\DoAnWeb.csproj.CopyComplete
+D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\WebAPISolution\WebAPI-3Layer\Source\DoAnWeb\obj\Debug\DoAnWeb.csprojAssemblyReference.cache
+D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\WebAPISolution\WebAPI-3Layer\Source\DoAnWeb\obj\Debug\DoAnWeb.csproj.CoreCompileInputs.cache
+D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\WebAPISolution\WebAPI-3Layer\Source\DoAnWeb\obj\Debug\DoAnWeb.dll
+D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\WebAPISolution\WebAPI-3Layer\Source\DoAnWeb\obj\Debug\DoAnWeb.pdb
