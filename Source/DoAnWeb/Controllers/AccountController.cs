@@ -1,4 +1,4 @@
-﻿using DoAnWeb.Models;
+﻿using DoAnWeb.ClientModels;
 using DoAnWeb.Ultilities;
 using BotDetect.Web.Mvc;
 using System;
@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
 using DoAnWeb.Caching;
-using DoAnWeb.ClientModels;
+using DoAnWeb.Models;
 
 namespace DoAnWeb.Controllers
 {
@@ -28,41 +28,40 @@ namespace DoAnWeb.Controllers
         public ActionResult Login(ClientUserInfo ui)
         {
             var pass = Ulti.Md5Hash(ui.Password);
-            using (var dc = new QLBH_WebEntities())
+            var user = CSDLQLBH.Login(ui);
+
+            if (user != null)
             {
+                if (user.Permission == "Customer")
+                {
+                    Session["Logged"] = ui;
+                    Session["Updated"] = null;
+                    Response.Cookies["UserId"].Value = user.FullInfo.f_ID.ToString();
+                    Response.Cookies["UserId"].Expires = DateTime.Now.AddDays(7);
 
-                var user = CSDLQLBH.Login(ui);
-
-                if (user != null){
-                    if(user.Permission == "Customer")
-                    {
-                        Session["Logged"] = ui;
-                        Session["Updated"] = null;
-                        Response.Cookies["UserId"].Value = user.FullInfo.f_ID.ToString();
-                        Response.Cookies["UserId"].Expires = DateTime.Now.AddDays(7);
-
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        //them chuc nang admin
-                        ui.Permission = user.Permission;
-                        //cookie
-                        Session["Logged"] = ui;
-                        Session["Updated"] = null;
-                        Response.Cookies["UserId"].Value = user.FullInfo.f_ID.ToString();
-                        Response.Cookies["UserId"].Expires = DateTime.Now.AddDays(7);
-
-                        return RedirectToAction("Index", "ManageProduct");// trả về trang Index nếu đã nhập đúng thông tin
-                    }
-                   
+                    return RedirectToAction("Index", "Home");
                 }
-              
-              
-                else {
-                    ViewBag.ErrorMsg = "Thông tin đăng nhập chưa đúng";
+                else
+                {
+                    //them chuc nang admin
+                    ui.Permission = user.Permission;
+                    //cookie
+                    Session["Logged"] = ui;
+                    Session["Updated"] = null;
+                    Response.Cookies["UserId"].Value = user.FullInfo.f_ID.ToString();
+                    Response.Cookies["UserId"].Expires = DateTime.Now.AddDays(7);
+
+                    return RedirectToAction("Index", "ManageProduct");// trả về trang Index nếu đã nhập đúng thông tin
                 }
+
             }
+
+
+            else
+            {
+                ViewBag.ErrorMsg = "Thông tin đăng nhập chưa đúng";
+            }
+
             return View();
         }
         //post: Account/Logout

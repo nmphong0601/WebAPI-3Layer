@@ -72,3 +72,40 @@ D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\WebAPISolution\WebAPI-3La
 D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\WebAPISolution\WebAPI-3Layer\Source\BUS\obj\Debug\BUS.csproj.CopyComplete
 D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\WebAPISolution\WebAPI-3Layer\Source\BUS\obj\Debug\BUS.dll
 D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\WebAPISolution\WebAPI-3Layer\Source\BUS\obj\Debug\BUS.pdb
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\obj\Debug\BUS.csprojAssemblyReference.cache
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\obj\Debug\BUS.csproj.CoreCompileInputs.cache
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\BUS.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\BUS.pdb
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\DAO.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\DTO.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\AutoMapper.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\EntityFramework.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\Useful.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\System.Web.Mvc.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\System.Web.Http.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\System.Web.WebPages.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\System.Web.Razor.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\System.Net.Http.Formatting.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\Newtonsoft.Json.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\DAO.pdb
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\DAO.dll.config
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\DTO.pdb
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\DTO.dll.config
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\AutoMapper.xml
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\EntityFramework.xml
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\Useful.pdb
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\Useful.dll.config
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\System.Web.Mvc.xml
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\System.Web.Http.xml
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\System.Web.WebPages.xml
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\System.Web.Razor.xml
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\System.Net.Http.Formatting.xml
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\Newtonsoft.Json.xml
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\obj\Debug\BUS.csproj.CopyComplete
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\obj\Debug\BUS.dll
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\BUS\obj\Debug\BUS.pdb

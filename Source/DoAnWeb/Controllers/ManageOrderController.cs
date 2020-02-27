@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using DoAnWeb.Caching;
-using DoAnWeb.Models;
+using DoAnWeb.ClientModels;
 
 namespace DoAnWeb.Controllers
 {
@@ -27,7 +27,7 @@ namespace DoAnWeb.Controllers
         }
 
         [HttpPost]
-        public ActionResult Update(Order order)
+        public ActionResult Update(ClientOrder order)
         {
             var or = CSDLQLBH.GetSingleOrder(order.OrderID);
             or.SttID = order.SttID;

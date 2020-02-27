@@ -1,5 +1,5 @@
 ﻿using DoAnWeb.Caching;
-using DoAnWeb.Models;
+using DoAnWeb.ClientModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

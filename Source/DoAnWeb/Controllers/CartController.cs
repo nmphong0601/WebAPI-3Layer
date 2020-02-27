@@ -1,6 +1,5 @@
 ﻿using DoAnWeb.Caching;
 using DoAnWeb.ClientModels;
-using DoAnWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -15,7 +14,7 @@ namespace DoAnWeb.Controllers
         // GET: Cart
         public ActionResult Detail()
         {
-            var cart = Session["cart"] as Cart;
+            var cart = Session["cart"] as ClientCart;
             return View(cart);
         }
 

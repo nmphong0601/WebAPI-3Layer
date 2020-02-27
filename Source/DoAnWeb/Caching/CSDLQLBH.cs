@@ -78,6 +78,25 @@ namespace DoAnWeb.Caching
 
         #region Users
 
+        public static IEnumerable<ClientUser> GetUsers(string filter = null, string sort = "OrderId DESC")
+        {
+            try
+            {
+                var endPointString = endPointQLBH + "api/users?filter=" + filter + "&sort=" + sort;
+                var nguoidungs = Task.Run(() => GetCachedNullCheckAsync<IEnumerable<ClientUser>>(endPointString)).Result;
+
+                return nguoidungs;
+            }
+            catch (BusinessLayerException)
+            {
+                throw new BusinessLayerException(500, "#1001002 Không lấy được dữ liệu người dùng.");
+            }
+            catch (Exception)
+            {
+                throw new BusinessLayerException(500, "#1001003 Không lấy được dữ liệu người dùng.");
+            }
+        }
+
         public static ClientUser UserGetSingle(int? id)
         {
             id = id ?? throw new BusinessLayerException(500, "#1001001 Không lấy được dữ liệu người dùng.");
@@ -366,16 +385,113 @@ namespace DoAnWeb.Caching
             }
         }
 
+        public static ClientProducer GetSingleProducer(int? id)
+        {
+            try
+            {
+                var endPointString = endPointQLBH + "api/producers/" + id;
+                var producer = Task.Run(() => GetCachedNullCheckAsync<ClientProducer>(endPointString)).Result;
+
+                return producer;
+            }
+            catch (BusinessLayerException)
+            {
+                throw new BusinessLayerException(500, "#1001002 Không lấy được dữ liệu nhà sản xuất.");
+            }
+            catch (Exception)
+            {
+                throw new BusinessLayerException(500, "#1001003 Không lấy được dữ liệu nhà sản xuất.");
+            }
+        }
+
+        public static ClientProducer InsertProducer(ClientProducer producer)
+        {
+            try
+            {
+                var endPointString = endPointQLBH + "api/producers";
+                var producerInsert = Task.Run(() => PostAsync<ClientProducer>(endPointString, producer)).Result;
+
+                return producerInsert;
+            }
+            catch (BusinessLayerException)
+            {
+                throw new BusinessLayerException(500, "#1001002 Không lấy được dữ liệu nhà sản xuất.");
+            }
+            catch (Exception)
+            {
+                throw new BusinessLayerException(500, "#1001003 Không lấy được dữ liệu nhà sản xuất.");
+            }
+        }
+
+        public static ClientProducer UpdateProducer(ClientProducer producer)
+        {
+            try
+            {
+                var endPointString = endPointQLBH + "api/producers";
+                var producerUpdate = Task.Run(() => PutAsync<ClientProducer>(endPointString, producer)).Result;
+
+                return producerUpdate;
+            }
+            catch (BusinessLayerException)
+            {
+                throw new BusinessLayerException(500, "#1001002 Không lấy được dữ liệu nhà sản xuất.");
+            }
+            catch (Exception)
+            {
+                throw new BusinessLayerException(500, "#1001003 Không lấy được dữ liệu nhà sản xuất.");
+            }
+        }
+
+        public static Boolean RemoveProducer(int? id)
+        {
+            try
+            {
+                var endPointString = endPointQLBH + "api/producers/" + id;
+                var isDelete = Task.Run(() => DeleteAsync<Boolean>(endPointString)).Result;
+
+                return isDelete;
+            }
+            catch (BusinessLayerException)
+            {
+                throw new BusinessLayerException(500, "#1001002 Không lấy được dữ liệu nhà sản xuất.");
+            }
+            catch (Exception)
+            {
+                throw new BusinessLayerException(500, "#1001003 Không lấy được dữ liệu nhà sản xuất.");
+            }
+        }
+
         #endregion
 
         #region Products
 
-        public static IEnumerable<ClientProduct> GetProducts()
+        public static IEnumerable<ClientProduct> GetProducts(string filter = null, string sort = "ProID DESC")
         {
             try
             {
-                var endPointString = endPointQLBH + "api/products";
+                var endPointString = endPointQLBH + "api/products?filter=" + filter + "&sort=" + sort;
                 var products = Task.Run(() => GetCachedNullCheckAsync<IEnumerable<ClientProduct>>(endPointString)).Result;
+
+                return products;
+            }
+            catch (BusinessLayerException)
+            {
+                throw new BusinessLayerException(500, "#1001002 Không lấy được dữ liệu sản phẩm.");
+            }
+            catch (Exception)
+            {
+                throw new BusinessLayerException(500, "#1001003 Không lấy được dữ liệu sản phẩm.");
+            }
+        }
+
+        public static Dictionary<string, object> GetPagedProducts(string keyword = null, string filter = null, string sort = "ProID DESC", int page = 1, int pageSize = 6)
+        {
+            try
+            {
+                var endPointString = endPointQLBH + "api/products/SearchProduct?keywork="
+                                    + keyword + "&filter=" + filter + "&sort=" + sort + "&page=" + page + "&pageSize=" + pageSize;
+
+                var products = Task.Run(() => GetCachedNullCheckAsync<Dictionary<string, object>>(endPointString)).Result;
 
                 return products;
             }
@@ -607,6 +723,128 @@ namespace DoAnWeb.Caching
             catch (Exception)
             {
                 throw new BusinessLayerException(500, "#1001003 Không lấy được dữ liệu trạng thái.");
+            }
+        }
+
+        #endregion
+
+        #region Comment
+
+        public static IEnumerable<ClientComment> GetCommentsByProduct(int? proId)
+        {
+            try
+            {
+                var endPointString = endPointQLBH + "api/comments/Product?proId=" + proId;
+                var comments = Task.Run(() => GetCachedNullCheckAsync<IEnumerable<ClientComment>>(endPointString)).Result;
+
+                return comments;
+            }
+            catch (BusinessLayerException)
+            {
+                throw new BusinessLayerException(500, "#1001002 Không lấy được dữ liệu bình luận.");
+            }
+            catch (Exception)
+            {
+                throw new BusinessLayerException(500, "#1001003 Không lấy được dữ liệu bình luận.");
+            }
+        }
+
+        public static ClientComment InsertComment(ClientComment clientComment)
+        {
+            try
+            {
+                var endPointString = endPointQLBH + "api/comments";
+                var commentInsert = Task.Run(() => PostAsync<ClientComment>(endPointString, clientComment)).Result;
+
+                return commentInsert;
+            }
+            catch (BusinessLayerException)
+            {
+                throw new BusinessLayerException(500, "#1001002 Không thêm mới được dữ liệu bình luận.");
+            }
+            catch (Exception)
+            {
+                throw new BusinessLayerException(500, "#1001003 Không thêm mới được dữ liệu bình luận.");
+            }
+        }
+
+        public static ClientComment UpdateComment(ClientComment clientComment)
+        {
+            try
+            {
+                var endPointString = endPointQLBH + "api/comments";
+                var commentUpdate = Task.Run(() => PutAsync<ClientComment>(endPointString, clientComment)).Result;
+
+                return commentUpdate;
+            }
+            catch (BusinessLayerException)
+            {
+                throw new BusinessLayerException(500, "#1001002 Không cập nhật được dữ liệu bình luận.");
+            }
+            catch (Exception)
+            {
+                throw new BusinessLayerException(500, "#1001003 Không cập nhật được dữ liệu bình luận.");
+            }
+        }
+
+        #endregion
+
+        #region Rating
+
+        public static IEnumerable<ClientRating> GetRatingsByProduct(int? proId)
+        {
+            try
+            {
+                var endPointString = endPointQLBH + "api/ratings/Product?proId=" + proId;
+                var ratings = Task.Run(() => GetCachedNullCheckAsync<IEnumerable<ClientRating>>(endPointString)).Result;
+
+                return ratings;
+            }
+            catch (BusinessLayerException)
+            {
+                throw new BusinessLayerException(500, "#1001002 Không lấy được dữ liệu đánh giá.");
+            }
+            catch (Exception)
+            {
+                throw new BusinessLayerException(500, "#1001003 Không lấy được dữ liệu đánh giá.");
+            }
+        }
+
+        public static ClientRating InsertRating(ClientRating clientRating)
+        {
+            try
+            {
+                var endPointString = endPointQLBH + "api/ratings";
+                var ratingInsert = Task.Run(() => PostAsync<ClientRating>(endPointString, clientRating)).Result;
+
+                return ratingInsert;
+            }
+            catch (BusinessLayerException)
+            {
+                throw new BusinessLayerException(500, "#1001002 Không thêm mới được dữ liệu đánh giá.");
+            }
+            catch (Exception)
+            {
+                throw new BusinessLayerException(500, "#1001003 Không thêm mới được dữ liệu đánh giá.");
+            }
+        }
+
+        public static ClientRating UpdateRating(ClientRating clientRating)
+        {
+            try
+            {
+                var endPointString = endPointQLBH + "api/ratings";
+                var ratingUpdate = Task.Run(() => PutAsync<ClientRating>(endPointString, clientRating)).Result;
+
+                return ratingUpdate;
+            }
+            catch (BusinessLayerException)
+            {
+                throw new BusinessLayerException(500, "#1001002 Không cập nhật được dữ liệu đánh giá.");
+            }
+            catch (Exception)
+            {
+                throw new BusinessLayerException(500, "#1001003 Không cập nhật được dữ liệu đánh giá.");
             }
         }
 

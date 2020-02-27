@@ -425,3 +425,5 @@ D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\WebAPISolution\WebAPI-3La
 D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\WebAPISolution\WebAPI-3Layer\Source\DoAnWeb\obj\Debug\DoAnWeb.csproj.CoreCompileInputs.cache
 D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\WebAPISolution\WebAPI-3Layer\Source\DoAnWeb\obj\Debug\DoAnWeb.dll
 D:\Study+Programming\18HCB\Phan tich thiet ke phan mem\WebAPISolution\WebAPI-3Layer\Source\DoAnWeb\obj\Debug\DoAnWeb.pdb
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\DoAnWeb\obj\Debug\DoAnWeb.csprojAssemblyReference.cache
+D:\Study\PhanTichThietKePhanMem\Projects\WebAPI-3Layer\Source\DoAnWeb\obj\Debug\DoAnWeb.csproj.CoreCompileInputs.cache

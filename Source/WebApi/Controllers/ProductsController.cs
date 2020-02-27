@@ -111,7 +111,7 @@ namespace WebApi.Controllers
 
         //DELETE
         [HttpPut]
-        public int Delete(int? id)
+        public Boolean Delete(int? id)
         {
             return service.Delete(id);
         }

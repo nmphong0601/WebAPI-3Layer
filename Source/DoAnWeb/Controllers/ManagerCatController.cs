@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using DoAnWeb.Caching;
 using DoAnWeb.ClientModels;
-using DoAnWeb.Models;
 using DoAnWeb.Ultilities;
 
 namespace DoAnWeb.Controllers
@@ -22,7 +21,7 @@ namespace DoAnWeb.Controllers
         // GET: ManagerCat/Add
         public ActionResult Add()
         {
-            var c = new Category
+            var c = new ClientCategory
             {
                 CatName = "cat"
 
@@ -54,7 +53,7 @@ namespace DoAnWeb.Controllers
         }
 
         [HttpPost]
-        public ActionResult Update(Category category)
+        public ActionResult Update(ClientCategory category)
         {
             var cat = CSDLQLBH.GetSingleCategory(category.CatID);
             cat.CatName = category.CatName;

@@ -49,7 +49,6 @@ namespace Ultilities
                                 ReasonPhrase = businessException.ErrorDescription
 
                             });
-                            break;
                     }
 
                 }

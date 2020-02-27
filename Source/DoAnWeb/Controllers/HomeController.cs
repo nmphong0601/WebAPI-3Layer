@@ -1,5 +1,5 @@
 ﻿using DoAnWeb.Caching;
-using DoAnWeb.Models;
+using DoAnWeb.ClientModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +13,8 @@ namespace DoAnWeb.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            using (var dc = new QLBH_WebEntities())
-            {
-                var l = CSDLQLBH.GetProducts().ToList();
-                return View(l);
-            }           
+            var l = CSDLQLBH.GetProducts().ToList();
+            return View(l);
         }
     }
 }

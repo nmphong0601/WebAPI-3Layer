@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DoAnWeb.Caching;
+using DoAnWeb.ClientModels;
 using DoAnWeb.Models;
 
 namespace DoAnWeb.Controllers
@@ -14,29 +16,15 @@ namespace DoAnWeb.Controllers
         public ActionResult SearchProduct(string keyword, int page = 1)
         {
             ViewBag.Keyword = keyword;
-            List<Product> listPro = new List<Product>();
-            using (var qlbh = new QLBH_WebEntities())
-            {
-                int totalP = qlbh.Products.Where(p => p.ProName.Contains(keyword)).Count();
-                int nPage = totalP / nPerPage + (totalP % nPerPage > 0 ? 1 : 0);
-                if (page < 1)
-                {
-                    page = 1;
-                }
-                if (page > nPage)
-                {
-                    page = nPage;
-                }
+            List<ClientProduct> listPro = new List<ClientProduct>();
 
-                ViewBag.totalPage = nPage;
-                ViewBag.curPage = page;
+            Dictionary<string, object> result = CSDLQLBH.GetPagedProducts(keyword: keyword, page: page, pageSize: nPerPage);
 
-                listPro = qlbh.Products.Where(p => p.ProName.Contains(keyword))
-                    .OrderBy(p => p.ProID)
-                    .Skip((page - 1) * nPerPage)
-                    .Take(nPerPage)
-                    .ToList();
-            }
+            ViewBag.totalPage = result["totalPage"];
+            ViewBag.curPage = result["curPage"];
+
+            listPro = result["Collection"] as List<ClientProduct>;
+
             return  View("Search", listPro);
         }
         public ActionResult GetListProduct(decimal? PriceMin, decimal? PriceMax, int? CatID, int? ProducerID, int page = 1)
@@ -46,8 +34,7 @@ namespace DoAnWeb.Controllers
             ViewBag.CatID = CatID;
             ViewBag.ProducerID = ProducerID;
 
-            QLBH_WebEntities qlbh = new QLBH_WebEntities();
-            var List = qlbh.Products;
+            var List = CSDLQLBH.GetProducts();
             var ListProduct = List.ToList();
 
 

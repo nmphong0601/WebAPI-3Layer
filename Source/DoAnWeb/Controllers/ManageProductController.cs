@@ -30,15 +30,13 @@ namespace DoAnWeb.Controllers
         // GET: ManageProduct/Delete
         public ActionResult Delete(int id)
         {
-            using (var dc = new QLBH_WebEntities())
+            var pD = CSDLQLBH.GetSingleProduct(id);
+            if (pD != null)
             {
-                var pD = CSDLQLBH.GetSingleProduct(id);
-                if(pD!=null){
-                    CSDLQLBH.RemoveProduct(id);
-                }
-                Ulti.DeleteProductImgs(id, Server.MapPath("~"));
-                return RedirectToAction("Index");
+                CSDLQLBH.RemoveProduct(id);
             }
+            Ulti.DeleteProductImgs(id, Server.MapPath("~"));
+            return RedirectToAction("Index");
         }
 
         // GET: ManageProduct/Add
